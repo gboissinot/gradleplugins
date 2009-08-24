@@ -1,0 +1,30 @@
+usePlugin('groovy')
+
+import org.apache.ivy.plugins.resolver.*
+
+version=1.0
+
+
+repositories {
+	mavenCentral()
+    add(new URLResolver()) {
+        name = 'sf_gradleRepo'
+     		addArtifactPattern('http://gradle.sourceforge.net/gradleRepo/[organisation]/[module](/[branch])/[type]s/[artifact]-[revision](-[classifier])(.[ext])')
+	}
+	
+	add(new URLResolver()) {
+        name = 'breskeby-Repo'
+        addArtifactPattern('http://breskeby.com/repo/[module](/[branch])/[type]s/[artifact]-[revision](-[classifier])(.[ext])')
+	}
+}
+
+dependencies {
+	// the growl-api lib is a tiny modified version the lib distributed at http://forums.cocoaforge.com/viewtopic.php?f=6&t=17320
+	// I changed the lib load mechanism to use System.load() instead of System.loadLibrary()
+	// thanks for that easy to use api!
+	compile ":growl-api:0.1"
+    compile files(org.gradle.util.BootstrapUtil.gradleClasspath)
+
+    // todo Actually it should be only groovy, but without junit we get a strange error. We need to understand this.
+    groovy files(org.gradle.util.BootstrapUtil.groovyFiles)
+}
