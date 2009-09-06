@@ -9,12 +9,13 @@ buildscript {
     } 
 }
 
-configure(productPde){
-	//got root directory of 
-	buildDirectory = "/Users/Rene/workspaces/gradle/github/gradleplugins/pdePlugin/src/samples/productbuild/SimpleMailExample/build/work/"
-	publishDirectory = "/Users/Rene/workspaces/gradle/github/gradleplugins/pdePlugin/src/samples/productbuild/SimpleMailExample/build/"	
-	pluginsSrcDirList = ["/Users/Rene/workspaces/gradle/github/gradleplugins/pdePlugin/src/samples/productbuild"]
-	builderDir = "/Users/Rene/workspaces/gradle/github/gradleplugins/pdePlugin/src/samples/productbuild/SimpleMailExample/build"
+configure(productPde){	
+	def projectDir = getRootDir()
+	println(projectDir);
+	buildDirectory = "${projectDir}/build/work"
+	publishDirectory = "${projectDir}/build"	
+	pluginsSrcDirList = ["${projectDir}/.."]
+	builderDir = "${projectDir}/build"
 	base = "/Users/Rene/workspaces/gradle/github/"
 	buildId = "SimpleMailExample"
 	baseLocation = "/Users/Rene/workspaces/gradle/github/eclipse"	
