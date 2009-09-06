@@ -1,0 +1,25 @@
+usePlugin(com.thalesgroup.gradle.pde.ProductPdeBuild)
+
+buildscript { 
+    repositories { 
+		flatDir(dirs: "../../../../build/libs")
+	} 
+    dependencies {
+        classpath ':pdePlugin:1.0' 
+    } 
+}
+
+configure(productPde){
+	//got root directory of 
+	buildDirectory = "/Users/Rene/workspaces/gradle/github/gradleplugins/pdePlugin/src/samples/productbuild/SimpleMailExample/build/work/"
+	publishDirectory = "/Users/Rene/workspaces/gradle/github/gradleplugins/pdePlugin/src/samples/productbuild/SimpleMailExample/build/"	
+	pluginsSrcDirList = ["/Users/Rene/workspaces/gradle/github/gradleplugins/pdePlugin/src/samples/productbuild"]
+	builderDir = "/Users/Rene/workspaces/gradle/github/gradleplugins/pdePlugin/src/samples/productbuild/SimpleMailExample/build"
+	base = "/Users/Rene/workspaces/gradle/github/"
+	buildId = "SimpleMailExample"
+	baseLocation = "/Users/Rene/workspaces/gradle/github/eclipse"	
+	eclipseLocation = "/Users/Rene/workspaces/gradle/github/eclipse"
+	equinoxLauncherPluginVersion = "1.0.200.v20090520"
+	pdeBuildPluginVersion = "3.5.0.v20090527-1800"
+	productName = "/SimpleMailExample/simplemailproduct.product"	
+}
