@@ -33,7 +33,20 @@ class AntFeaturePde {
 	buildDirectory=buildDirectory.replace('\\','/')
 	builderDir=builderDir.replace('\\','/')
 
-	ant.echo(message:'Building..')
+        StringBuffer commandLine = new StringBuffer();
+	commandLine.append("java -jar ${eclipseLocation}/plugins/org.eclipse.equinox.launcher_${equinoxLauncherPluginVersion}.jar")        
+	commandLine.append(" -application")
+	commandLine.append(" org.eclipse.ant.core.antRunner")
+        commandLine.append(" -buildfile")
+	commandLine.append(" ${eclipseLocation}/plugins/org.eclipse.pde.build_${pdeBuildPluginVersion}/scripts/build.xml")	
+	commandLine.append(" -Dtimestamp=${timestamp}")
+	commandLine.append(" -Dbuilder=${builderDir}")
+	commandLine.append(" -DviewPath=${buildDirectory}")
+	
+	ant.echo(message:"[PDE Command line] - " + commandLine)        
+
+
+	ant.echo(message:"Building...")
         ant.java( 
            classname:"org.eclipse.equinox.launcher.Main",
            fork:"true",
@@ -46,7 +59,7 @@ class AntFeaturePde {
 	  arg(value:"-Dbuilder=${builderDir}")
 	  arg(value:"-DviewPath=${buildDirectory}")
 	  classpath{
-		pathelement(location:"${baseLocation}/plugins/org.eclipse.equinox.launcher_${equinoxLauncherPluginVersion}.jar")
+		pathelement(location:"${eclipseLocation}/plugins/org.eclipse.equinox.launcher_${equinoxLauncherPluginVersion}.jar")
 	  }
        } 
     }

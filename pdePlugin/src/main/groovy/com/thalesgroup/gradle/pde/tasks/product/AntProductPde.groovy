@@ -32,7 +32,18 @@ class AntProductPde {
 	buildDirectory=buildDirectory.replace('\\','/')
 	builderDir=builderDir.replace('\\','/')
 
-	ant.echo(message:'Building..')
+        StringBuffer commandLine = new StringBuffer();
+	commandLine.append("java -jar ${eclipseLocation}/plugins/org.eclipse.equinox.launcher_${equinoxLauncherPluginVersion}.jar")        
+	commandLine.append(" -application")
+	commandLine.append(" org.eclipse.ant.core.antRunner")
+        commandLine.append(" -buildfile")
+	commandLine.append(" ${eclipseLocation}/plugins/org.eclipse.pde.build_${pdeBuildPluginVersion}/scripts/productBuild/productBuild.xml")	
+	commandLine.append(" -Dbuilder=${builderDir}")	
+	commandLine.append(" -DbaseLocation=${baseLocation}")
+	commandLine.append(" -Dtimestamp=${timestamp}")	
+	
+	ant.echo(message:"[PDE Command line] - " + commandLine)        
+	ant.echo(message:"Building...")
         ant.java( 
            classname:"org.eclipse.equinox.launcher.Main",
            fork:"true",
@@ -45,7 +56,7 @@ class AntProductPde {
 	  arg(value:"-DbaseLocation=${baseLocation}")
 	  arg(value:"-Dtimestamp=${timestamp}")
 	  classpath{
-		pathelement(location:"${baseLocation}/plugins/org.eclipse.equinox.launcher_${equinoxLauncherPluginVersion}.jar")
+		pathelement(location:"${eclipseLocation}/plugins/org.eclipse.equinox.launcher_${equinoxLauncherPluginVersion}.jar")
 	  }
        } 
     }
