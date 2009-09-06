@@ -40,7 +40,7 @@ public class View extends ViewPart {
 		l.setText("Subject:");
 		l.setFont(boldFont);
 		l = new Label(banner, SWT.WRAP);
-		l.setText("This is a message about the cool Eclipse RCP!");
+		l.setText("This is a message about the cool Eclipse RCP builded via gradle!");
 		
 		l = new Label(banner, SWT.WRAP);
 		l.setText("From:");
