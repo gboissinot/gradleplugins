@@ -23,32 +23,29 @@
 
 package com.thalesgroup.gradle.pde.tasks.feature;
 
-import org.gradle.api.*;
-import org.gradle.api.internal.ConventionTask;
-import org.gradle.api.tasks.util.ExistingDirsFilter;
-import java.util.ArrayList;
-import java.util.List;
+import org.gradle.api.Project;
+import org.gradle.api.Task;
+import org.gradle.api.TaskAction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.thalesgroup.gradle.pde.tasks.CommonTask;
 import com.thalesgroup.gradle.pde.FeaturePdeConvention;
 import com.thalesgroup.gradle.pde.tasks.AntPdeClean;
+import com.thalesgroup.gradle.pde.tasks.CommonTask;
 
 public class CleanFeatureTask extends CommonTask {
 
   private static Logger logger = LoggerFactory.getLogger(CleanFeatureTask.class);
 
   public CleanFeatureTask(final Project project, String name) {
-	super(project, name);
-        setActions(new ArrayList<TaskAction>());
-        doFirst(new TaskAction() {
-           public void execute(Task task) {
-              generate(project,task);
+	super();
+//    setActions(new ArrayList<TaskAction>());
+    doFirst(new TaskAction() {
+    	public void execute(Task task) {
+    		generate(project,task);
            }
         });
   }
-
   protected void generate(final Project project,Task task) {
 
      FeaturePdeConvention featurePdeConvention = featurePde(project.getConvention());

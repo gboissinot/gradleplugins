@@ -40,25 +40,29 @@ void execute(	String buildDirectory,
   def destLinkDir=eclipseLocation+"/links"
   ant.mkdir(dir:destLinkDir)
 
+  //Create the build directory
+  ant.echo(message:'Create the build directory')
+  ant.mkdir(dir:buildDirectory)
+
   //Create the temporary links directory
   def tempLinkDir=buildDirectory+"/links"
   ant.mkdir(dir:tempLinkDir)
 
   ant.echo(message:'Copy the link directory')
-  ant.copy(todir:tempLinkDir){
-    fileset(dir:linksSrcDirectory)
+  if(linksSrcDirectory){
+	  ant.copy(todir:tempLinkDir){
+		  fileset(dir:linksSrcDirectory)
+	  }	  
   }
-
-  //Create the build directory
-  ant.echo(message:'Create the build directory')
-  ant.mkdir(dir:buildDirectory)
 
   // Create the features directory and fill in
   def featuresDir =  buildDirectory + "/features"
   ant.echo(message:'Create the features directory')
   ant.mkdir(dir:featuresDir)
-  ant.copy(todir:featuresDir){
-    fileset(dir:featuresSrcDir)
+  if(featuresSrcDir){
+	  ant.copy(todir:featuresDir){
+		  fileset(dir:featuresSrcDir)
+	  }	  
   }
 
   // Create the plugins directory and fill in
@@ -72,7 +76,6 @@ void execute(	String buildDirectory,
 	    	}
 	  }
   }
-
 
   //Create the publish directory
   ant.echo(message:'Create the publication directory')

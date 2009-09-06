@@ -1,4 +1,3 @@
-import com.breskeby.gradle.notification.NotificationPlugin;
 import org.apache.ivy.plugins.resolver.*
 
 usePlugin 'java'

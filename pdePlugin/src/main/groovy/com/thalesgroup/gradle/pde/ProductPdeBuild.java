@@ -23,18 +23,18 @@
 
 package com.thalesgroup.gradle.pde;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.io.File;
 
 import org.gradle.api.*;
-import org.gradle.api.Plugin;
-import org.gradle.api.Project;
-import org.gradle.api.internal.project.PluginRegistry;
+import org.gradle.api.internal.plugins.PluginRegistry;
 import org.gradle.util.GUtil;
 import org.gradle.api.tasks.ConventionValue;
 import org.gradle.api.internal.IConventionAware;
 import org.gradle.api.plugins.Convention;
 import org.gradle.api.plugins.BasePlugin;
+import org.gradle.api.plugins.ProjectPluginsContainer;
 
 import com.thalesgroup.gradle.pde.tasks.product.CleanProductTask;
 import com.thalesgroup.gradle.pde.tasks.product.InitProductTask;
@@ -55,39 +55,43 @@ public class ProductPdeBuild implements Plugin {
     public static final String DEPLOY_TASK_NAME            = "deploy";
 
 
-    public void apply(Project project, PluginRegistry pluginRegistry, final Map<String, ?> customValues) {
+	public void apply(Project project, PluginRegistry pluginRegistry,
+			final Map<String, ?> customValues) {
 
-        ProductPdeConvention productPdeConvention = new ProductPdeConvention(project, customValues);
-        Convention convention = project.getConvention();
-        convention.getPlugins().put("productPde", productPdeConvention);
+		ProductPdeConvention productPdeConvention = new ProductPdeConvention(
+				project, customValues);
+		Convention convention = project.getConvention();
+		convention.getPlugins().put("productPde", productPdeConvention);
 
-	configureClean(project,customValues);
-	configureInit(project,customValues);
-	configureProcessResources(project,customValues);
-	configurePdeBuild(project,customValues);
-	configureDeploy(project,customValues);
-    }
+		configureClean(project, customValues);
+		configureInit(project, customValues);
+		configureProcessResources(project, customValues);
+		configurePdeBuild(project, customValues);
+		configureDeploy(project, customValues);
+	}
 
     private void configureClean(Project project, final Map<String, ?> customValues) {
 	
-	project.getTasks().withType(CleanProductTask.class).allTasks(new Action<CleanProductTask>() {
-            public void execute(CleanProductTask task) {
-		task.setCustomValues(customValues);
-            }
-        });
+    	project.getTasks().withType(CleanProductTask.class).allTasks(new Action<CleanProductTask>() {
+    			public void execute(CleanProductTask task) {
+   					task.setCustomValues(customValues);
+    			}
+    	});
         project.getTasks().add(CLEAN_TASK_NAME, CleanProductTask.class).setDescription("Cleanning...");
     }
 
 
-    private void configureInit(Project project, final Map<String, ?> customValues) {
-	
-	project.getTasks().withType(InitProductTask.class).allTasks(new Action<InitProductTask>() {
-            public void execute(InitProductTask task) {
-		task.setCustomValues(customValues);
-            }
-        });
-        project.getTasks().add(INIT_TASK_NAME, InitProductTask.class).setDescription("Initialization...");
-    }
+	private void configureInit(Project project,
+			final Map<String, ?> customValues) {
+
+		project.getTasks().withType(InitProductTask.class).allTasks(
+				new Action<InitProductTask>() {
+					public void execute(InitProductTask task) {
+						task.setCustomValues(customValues);
+					}
+				});
+		project.getTasks().add(INIT_TASK_NAME, InitProductTask.class).setDescription("Initialization...");
+	}
 
 
     private void configureProcessResources(Project project, final Map<String, ?> customValues) {
@@ -123,6 +127,23 @@ public class ProductPdeBuild implements Plugin {
             }
         });
         project.getTasks().add(DEPLOY_TASK_NAME, DeployProductTask.class).setDescription("Deploying...");
+   }
+
+   public void use(Project project, ProjectPluginsContainer container) {
+	   	HashMap<String, String> customValues = new HashMap<String,String>();
+	   	//project.setProperty("notification", config);
+		
+	   	ProductPdeConvention productPdeConvention = new ProductPdeConvention(project, customValues);
+        Convention convention = project.getConvention();
+        convention.getPlugins().put("productPde", productPdeConvention);
+
+        project.setProperty("productPde", productPdeConvention);
+        configureClean(project, customValues);
+        configureInit(project,customValues);
+        configureProcessResources(project,customValues);
+        configurePdeBuild(project,customValues);
+        configureDeploy(project,customValues);
+	
    }
 
 

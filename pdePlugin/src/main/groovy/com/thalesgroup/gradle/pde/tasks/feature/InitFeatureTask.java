@@ -42,8 +42,8 @@ public class InitFeatureTask extends CommonTask {
   private static Logger logger = LoggerFactory.getLogger(InitFeatureTask.class);
 
   public InitFeatureTask(final Project project, String name) {
-	super(project, name);
-        setActions(new ArrayList<TaskAction>());
+	super();
+//        setActions(new ArrayList<TaskAction>());
         doFirst(new TaskAction() {
            public void execute(Task task) {
               generate(project,task);
