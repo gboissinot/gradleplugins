@@ -35,7 +35,8 @@ class AntProductDeploy {
 	//delete the publish directory
 	ant.delete(dir: publishDirectory)
 
-	def zipFileName=buildDirectory + "/I.$buildId" + "/$buildId"+ ".zip"
+	//TODO Make the configuration an option
+	def zipFileName=buildDirectory + "/I.$buildId" + "/$buildId-win32.win32.x86"+ ".zip"
 	println zipFileName
 	ant.unzip(dest:publishDirectory,
 		  src: zipFileName)			
