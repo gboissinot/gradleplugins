@@ -36,7 +36,9 @@ class AntFeatureResource {
 		 String eclipseLocation,
 		 String version,
 		 AntBuilder ant) {
-	
+
+
+    println("execute AntFeatureResource ")
 	File fBuilderDir = new File(builderDir);
 	fBuilderDir.mkdirs();
 
@@ -72,6 +74,4 @@ class AntFeatureResource {
         AntUtil.copyFile(customTargetsIs, fBuilderDir, "customTargets.xml") 
 	customTargetsIs.close();
     }
-
-
 }

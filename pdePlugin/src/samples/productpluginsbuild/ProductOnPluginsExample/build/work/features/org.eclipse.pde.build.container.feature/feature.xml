@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature id="org.eclipse.pde.build.container.feature" version="1.0.0">
+	<plugin id="ProductOnPluginsExample" version="0.0.0" unpack="false"/>
+	<plugin id="com.ibm.icu" version="0.0.0" unpack="false"/>
+	<plugin id="org.eclipse.core.commands" version="0.0.0" unpack="false"/>
+	<plugin id="org.eclipse.core.contenttype" version="0.0.0" unpack="false"/>
+	<plugin id="org.eclipse.core.databinding" version="0.0.0" unpack="false"/>
+	<plugin id="org.eclipse.core.databinding.observable" version="0.0.0" unpack="false"/>
+	<plugin id="org.eclipse.core.databinding.property" version="0.0.0" unpack="false"/>
+	<plugin id="org.eclipse.core.expressions" version="0.0.0" unpack="false"/>
+	<plugin id="org.eclipse.core.jobs" version="0.0.0" unpack="false"/>
+	<plugin id="org.eclipse.core.runtime" version="0.0.0" unpack="false"/>
+	<plugin id="org.eclipse.equinox.app" version="0.0.0" unpack="false"/>
+	<plugin id="org.eclipse.equinox.common" version="0.0.0" unpack="false"/>
+	<plugin id="org.eclipse.equinox.preferences" version="0.0.0" unpack="false"/>
+	<plugin id="org.eclipse.equinox.registry" version="0.0.0" unpack="false"/>
+	<plugin id="org.eclipse.help" version="0.0.0" unpack="false"/>
+	<plugin id="org.eclipse.jface" version="0.0.0" unpack="false"/>
+	<plugin id="org.eclipse.jface.databinding" version="0.0.0" unpack="false"/>
+	<plugin id="org.eclipse.osgi" version="0.0.0" unpack="false"/>
+	<plugin id="org.eclipse.swt" version="0.0.0" unpack="false"/>
+	<plugin id="org.eclipse.ui" version="0.0.0" unpack="false"/>
+	<plugin id="org.eclipse.ui.workbench" version="0.0.0" unpack="false"/>
+	<plugin id="org.eclipse.core.runtime.compatibility.registry" version="0.0.0" unpack="true" fragment="true"/>
+	<plugin id="org.eclipse.swt.cocoa.macosx" version="0.0.0" unpack="false" os="macosx" ws="cocoa" arch="x86" fragment="true"/>
+	<plugin id="org.eclipse.ui.cocoa" version="0.0.0" unpack="false" os="macosx" ws="cocoa" arch="x86" fragment="true"/>
+	<includes id="org.eclipse.equinox.executable" version="0.0.0"/>
+</feature>

@@ -37,22 +37,18 @@ public class CleanFeatureTask extends CommonTask {
 
   private static Logger logger = LoggerFactory.getLogger(CleanFeatureTask.class);
 
-  public CleanFeatureTask(final Project project, String name) {
-	super();
-//    setActions(new ArrayList<TaskAction>());
-    doFirst(new TaskAction() {
-    	public void execute(Task task) {
-    		generate(project,task);
-           }
-        });
-  }
+	public CleanFeatureTask(final Project project, String name) {
+		super();
+		doFirst(new TaskAction() {
+			public void execute(Task task) {
+				generate(project, task);
+			}
+		});
+	}
+
   protected void generate(final Project project,Task task) {
-
      FeaturePdeConvention featurePdeConvention = featurePde(project.getConvention());
-
-     new AntPdeClean().execute( 
-			featurePdeConvention.getBuildDirectory(),
-			getAnt());  
+     new AntPdeClean().execute(featurePdeConvention.getBuildDirectory(),getAnt());  
   }
 
 }

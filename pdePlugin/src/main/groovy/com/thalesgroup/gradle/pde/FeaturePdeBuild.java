@@ -29,7 +29,6 @@ import java.util.Map;
 import org.gradle.api.Action;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
-import org.gradle.api.internal.plugins.PluginRegistry;
 import org.gradle.api.plugins.Convention;
 import org.gradle.api.plugins.ProjectPluginsContainer;
 
@@ -49,21 +48,19 @@ public class FeaturePdeBuild implements Plugin {
     public static final String PDE_BUILD_TASK_NAME         = "pdeBuild";    
     public static final String DEPLOY_TASK_NAME            = "deploy";
 
-
-    public void apply(Project project, PluginRegistry pluginRegistry, final Map<String, ?> customValues) {
-
-	//pluginRegistry.apply(BasePlugin.class, project, customValues);
-
-        FeaturePdeConvention featurePdeConvention = new FeaturePdeConvention(project, customValues);
+    public void use(Project project, ProjectPluginsContainer container) {
+	   	HashMap<String, ?> customValues = new HashMap<String,String>();
+	   	FeaturePdeConvention featurePdeConvention = new FeaturePdeConvention(project, customValues);
         Convention convention = project.getConvention();
         convention.getPlugins().put("featurePde", featurePdeConvention);
 
-	configureClean(project,customValues);
-	configureInit(project,customValues);
-	configureProcessResources(project,customValues);
-	configurePdeBuild(project,customValues);
-	configureDeploy(project,customValues);
-    }
+        project.setProperty("featurePde", featurePdeConvention);
+        configureClean(project,customValues);
+        configureInit(project,customValues);
+        configureProcessResources(project,customValues);
+        configurePdeBuild(project,customValues);
+        configureDeploy(project,customValues);
+	}
 
     private void configureClean(Project project, final Map<String, ?> customValues) {
 	
@@ -121,20 +118,5 @@ public class FeaturePdeBuild implements Plugin {
         });
         project.getTasks().add(DEPLOY_TASK_NAME, DeployFeatureTask.class).setDescription("Deploying...");
    }
-
-	public void use(Project project, ProjectPluginsContainer container) {
-	   	HashMap<String, ?> customValues = new HashMap<String,String>();
-	   	FeaturePdeConvention productPdeConvention = new FeaturePdeConvention(project, customValues);
-        Convention convention = project.getConvention();
-        convention.getPlugins().put("productPde", productPdeConvention);
-
-        configureClean(project,customValues);
-        configureInit(project,customValues);
-        configureProcessResources(project,customValues);
-        configurePdeBuild(project,customValues);
-        configureDeploy(project,customValues);
-	
-	}
-
 }
 

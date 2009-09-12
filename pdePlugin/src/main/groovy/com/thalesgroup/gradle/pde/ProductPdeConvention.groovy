@@ -51,10 +51,5 @@ public class ProductPdeConvention {
 
     ProductPdeConvention(Project project, Map customValues) {
         this.project = project
-	//PluginUtil.applyCustomValues(project.convention, this, customValues)
-    }
-
-
-     
-
+   }
 }

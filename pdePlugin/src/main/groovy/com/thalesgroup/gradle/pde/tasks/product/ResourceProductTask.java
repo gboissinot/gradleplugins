@@ -25,16 +25,14 @@
 package com.thalesgroup.gradle.pde.tasks.product;
 
 
-import org.gradle.api.*;
-
-import org.gradle.api.tasks.util.ExistingDirsFilter;
-import java.util.ArrayList;
-import java.util.List;
+import org.gradle.api.Project;
+import org.gradle.api.Task;
+import org.gradle.api.TaskAction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.thalesgroup.gradle.pde.tasks.CommonTask;
 import com.thalesgroup.gradle.pde.ProductPdeConvention;
+import com.thalesgroup.gradle.pde.tasks.CommonTask;
 
 public class ResourceProductTask extends CommonTask {
 
@@ -52,7 +50,7 @@ public class ResourceProductTask extends CommonTask {
 
   protected void generate(Project project, Task task) {
 
-           ProductPdeConvention productPdeConvention = productPde(project.getConvention());
+     ProductPdeConvention productPdeConvention = productPde(project.getConvention());
            
      new AntProductResource().execute( 
 				 productPdeConvention.getBase(),				 

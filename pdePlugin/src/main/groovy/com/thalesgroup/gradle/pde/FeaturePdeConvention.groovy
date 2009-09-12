@@ -49,10 +49,5 @@ public class FeaturePdeConvention {
 
     FeaturePdeConvention(Project project, Map customValues) {
         this.project = project
-	//PluginUtil.applyCustomValues(project.convention, this, customValues)
-    }
-
-
-     
-
+   }
 }

@@ -25,24 +25,18 @@ package com.thalesgroup.gradle.pde;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.io.File;
 
-import org.gradle.api.*;
-import org.gradle.api.internal.plugins.PluginRegistry;
-import org.gradle.util.GUtil;
-import org.gradle.api.tasks.ConventionValue;
-import org.gradle.api.internal.IConventionAware;
+import org.gradle.api.Action;
+import org.gradle.api.Plugin;
+import org.gradle.api.Project;
 import org.gradle.api.plugins.Convention;
-import org.gradle.api.plugins.BasePlugin;
 import org.gradle.api.plugins.ProjectPluginsContainer;
 
 import com.thalesgroup.gradle.pde.tasks.product.CleanProductTask;
-import com.thalesgroup.gradle.pde.tasks.product.InitProductTask;
-import com.thalesgroup.gradle.pde.tasks.product.ResourceProductTask;
-import com.thalesgroup.gradle.pde.tasks.product.PdeProductTask;
 import com.thalesgroup.gradle.pde.tasks.product.DeployProductTask;
-
-import com.thalesgroup.gradle.pde.ProductPdeConvention;
+import com.thalesgroup.gradle.pde.tasks.product.InitProductTask;
+import com.thalesgroup.gradle.pde.tasks.product.PdeProductTask;
+import com.thalesgroup.gradle.pde.tasks.product.ResourceProductTask;
 
 
 
@@ -55,22 +49,24 @@ public class ProductPdeBuild implements Plugin {
     public static final String DEPLOY_TASK_NAME            = "deploy";
 
 
-	public void apply(Project project, PluginRegistry pluginRegistry,
-			final Map<String, ?> customValues) {
+    public void use(Project project, ProjectPluginsContainer container) {
+	   	HashMap<String, String> customValues = new HashMap<String,String>();
+	   	//project.setProperty("notification", config);
+		
+	   	ProductPdeConvention productPdeConvention = new ProductPdeConvention(project, customValues);
+        Convention convention = project.getConvention();
+        convention.getPlugins().put("productPde", productPdeConvention);
 
-		ProductPdeConvention productPdeConvention = new ProductPdeConvention(
-				project, customValues);
-		Convention convention = project.getConvention();
-		convention.getPlugins().put("productPde", productPdeConvention);
+        project.setProperty("productPde", productPdeConvention);
+        configureClean(project, customValues);
+        configureInit(project,customValues);
+        configureProcessResources(project,customValues);
+        configurePdeBuild(project,customValues);
+        configureDeploy(project,customValues);
+	
+   }
 
-		configureClean(project, customValues);
-		configureInit(project, customValues);
-		configureProcessResources(project, customValues);
-		configurePdeBuild(project, customValues);
-		configureDeploy(project, customValues);
-	}
-
-    private void configureClean(Project project, final Map<String, ?> customValues) {
+   private void configureClean(Project project, final Map<String, ?> customValues) {
 	
     	project.getTasks().withType(CleanProductTask.class).allTasks(new Action<CleanProductTask>() {
     			public void execute(CleanProductTask task) {
@@ -129,23 +125,6 @@ public class ProductPdeBuild implements Plugin {
         project.getTasks().add(DEPLOY_TASK_NAME, DeployProductTask.class).setDescription("Deploying...");
    }
 
-   public void use(Project project, ProjectPluginsContainer container) {
-	   	HashMap<String, String> customValues = new HashMap<String,String>();
-	   	//project.setProperty("notification", config);
-		
-	   	ProductPdeConvention productPdeConvention = new ProductPdeConvention(project, customValues);
-        Convention convention = project.getConvention();
-        convention.getPlugins().put("productPde", productPdeConvention);
-
-        project.setProperty("productPde", productPdeConvention);
-        configureClean(project, customValues);
-        configureInit(project,customValues);
-        configureProcessResources(project,customValues);
-        configurePdeBuild(project,customValues);
-        configureDeploy(project,customValues);
-	
-   }
-
-
+  
 }
 

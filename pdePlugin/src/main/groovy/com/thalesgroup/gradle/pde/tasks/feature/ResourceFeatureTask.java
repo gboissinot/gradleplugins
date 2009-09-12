@@ -53,7 +53,8 @@ public class ResourceFeatureTask extends CommonTask {
   protected void generate(Project project, Task task) {
 
            FeaturePdeConvention featurePdeConvention = featurePde(project.getConvention());
-	 
+           System.out.println("generate ResourceFeatureTask");
+       	
            System.out.println ( featurePdeConvention.getBase() );
            System.out.println ( featurePdeConvention.getBuildDirectory() );
            System.out.println ( featurePdeConvention.getBuilderDir() );

@@ -1,0 +1,36 @@
+# 12.09.09 23:08:05 MESZ
+# Eclipse Java Compiler 0.963, 3.5.0 rc3, Copyright IBM Corp 2000, 2008. All rights reserved.
+----------
+1. WARNING in /Users/Rene/workspaces/gradle/github/gradleplugins/pdePlugin/src/samples/productpluginsbuild/ProductOnPluginsExample/build/work/plugins/ProductOnPluginsExample/src/main/java/simplemailexample/ApplicationActionBarAdvisor.java (at line 3)
+	import java.util.concurrent.atomic.AtomicInteger;
+	       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The import java.util.concurrent.atomic.AtomicInteger is never used
+----------
+----------
+2. WARNING in /Users/Rene/workspaces/gradle/github/gradleplugins/pdePlugin/src/samples/productpluginsbuild/ProductOnPluginsExample/build/work/plugins/ProductOnPluginsExample/src/main/java/simplemailexample/NavigationView.java (at line 43)
+	private ArrayList children;
+	        ^^^^^^^^^
+ArrayList is a raw type. References to generic type ArrayList<E> should be parameterized
+----------
+3. WARNING in /Users/Rene/workspaces/gradle/github/gradleplugins/pdePlugin/src/samples/productpluginsbuild/ProductOnPluginsExample/build/work/plugins/ProductOnPluginsExample/src/main/java/simplemailexample/NavigationView.java (at line 46)
+	children = new ArrayList();
+	               ^^^^^^^^^
+ArrayList is a raw type. References to generic type ArrayList<E> should be parameterized
+----------
+4. WARNING in /Users/Rene/workspaces/gradle/github/gradleplugins/pdePlugin/src/samples/productpluginsbuild/ProductOnPluginsExample/build/work/plugins/ProductOnPluginsExample/src/main/java/simplemailexample/NavigationView.java (at line 49)
+	children.add(child);
+	^^^^^^^^^^^^^^^^^^^
+Type safety: The method add(Object) belongs to the raw type ArrayList. References to generic type ArrayList<E> should be parameterized
+----------
+5. WARNING in /Users/Rene/workspaces/gradle/github/gradleplugins/pdePlugin/src/samples/productpluginsbuild/ProductOnPluginsExample/build/work/plugins/ProductOnPluginsExample/src/main/java/simplemailexample/NavigationView.java (at line 57)
+	return (TreeObject[]) children.toArray(new TreeObject[children.size()]);
+	                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Type safety: The method toArray(Object[]) belongs to the raw type ArrayList. References to generic type ArrayList<E> should be parameterized
+----------
+----------
+6. WARNING in /Users/Rene/workspaces/gradle/github/gradleplugins/pdePlugin/src/samples/productpluginsbuild/ProductOnPluginsExample/build/work/plugins/ProductOnPluginsExample/src/main/java/simplemailexample/Perspective.java (at line 3)
+	import java.io.File;
+	       ^^^^^^^^^^^^
+The import java.io.File is never used
+----------
+6 problems (6 warnings)[17 .class files generated]

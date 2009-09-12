@@ -24,17 +24,15 @@
 package com.thalesgroup.gradle.pde.tasks.feature;
 
 
-import org.gradle.api.*;
-import org.gradle.api.internal.ConventionTask;
-import org.gradle.api.tasks.util.ExistingDirsFilter;
-import java.util.ArrayList;
-import java.util.List;
+import org.gradle.api.Project;
+import org.gradle.api.Task;
+import org.gradle.api.TaskAction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.thalesgroup.gradle.pde.FeaturePdeConvention;
 import com.thalesgroup.gradle.pde.tasks.AntPdeInit;
 import com.thalesgroup.gradle.pde.tasks.CommonTask;
-import com.thalesgroup.gradle.pde.FeaturePdeConvention;
 
 
 public class InitFeatureTask extends CommonTask {
@@ -43,7 +41,6 @@ public class InitFeatureTask extends CommonTask {
 
   public InitFeatureTask(final Project project, String name) {
 	super();
-//        setActions(new ArrayList<TaskAction>());
         doFirst(new TaskAction() {
            public void execute(Task task) {
               generate(project,task);
@@ -55,14 +52,15 @@ public class InitFeatureTask extends CommonTask {
 
      FeaturePdeConvention featurePdeConvention = featurePde(project.getConvention());
 
+     System.out.println(featurePdeConvention);
      new AntPdeInit().execute( 
 			featurePdeConvention.getBuildDirectory(),
 			featurePdeConvention.getBuilderDir(),
 			featurePdeConvention.getPluginsSrcDirList(),
 			featurePdeConvention.getFeaturesSrcDir(),
 			featurePdeConvention.getPublishDirectory(),
-                        featurePdeConvention.getEclipseLocation(),
-                        featurePdeConvention.getLinksSrcDirectory(),
+            featurePdeConvention.getEclipseLocation(),
+            featurePdeConvention.getLinksSrcDirectory(),
 			getAnt());  
   }
 

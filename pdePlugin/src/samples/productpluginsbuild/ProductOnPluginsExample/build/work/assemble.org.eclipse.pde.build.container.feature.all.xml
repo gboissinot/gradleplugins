@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Assemble All Config of org.eclipse.pde.build.container.feature" default="main">
+	<macrodef name="assemble">
+		<attribute name="config" />
+		<attribute name="element" />
+		<attribute name="dot" />
+		<attribute name="scriptPrefix" />
+		<sequential>
+			<condition property="defaultAssemble.@{config}" value="defaultAssemble" else="assemble.@{element}@{dot}@{config}"			>
+				<isset property="defaultAssemblyEnabled"/>
+			</condition>
+			<condition property="customOrDefault.@{config}" value="assemble.@{element}@{dot}@{config}" else="${defaultAssemble.@{config}}"			>
+				<isset property="assemble.@{element}@{dot}@{config}"/>
+			</condition>
+			<ant antfile="${customTargets}" target="${customOrDefault.@{config}}">
+				<property name="config" value="@{config}"/>
+				<property name="element" value="@{element}"/>
+				<property name="assembleScriptName" value="@{scriptPrefix}.@{element}@{dot}@{config}.xml"/>
+			</ant>
+		</sequential>
+	</macrodef>
+	<target name="main">
+		<assemble  config="macosx.cocoa.x86" element="org.eclipse.pde.build.container.feature" dot="." scriptPrefix="assemble"		/>
+		<antcall target="generate.p2.metadata"/>
+	</target>
+	<target name="generate.p2.metadata" if="generate.p2.metadata" unless="runPackager">
+		<copy file="/Users/Rene/workspaces/gradle/github/gradleplugins/pdePlugin/src/samples/productpluginsbuild/ProductOnPluginsExample/build/work/plugins/ProductOnPluginsExample/simplemailproduct.product" tofile="/Users/Rene/workspaces/gradle/github/gradleplugins/pdePlugin/src/samples/productpluginsbuild/ProductOnPluginsExample/build/work/features/org.eclipse.pde.build.container.feature/product/simplemailproduct.product" overwrite="true"/>
+		<eclipse.idReplacer productFilePath="/Users/Rene/workspaces/gradle/github/gradleplugins/pdePlugin/src/samples/productpluginsbuild/ProductOnPluginsExample/build/work/features/org.eclipse.pde.build.container.feature/product/simplemailproduct.product"
+		                    selfVersion="1.0.0" 
+		                    pluginIds="ProductOnPluginsExample:0.0.0,1.0.0,com.ibm.icu:0.0.0,4.0.1.v20090415,org.eclipse.core.commands:0.0.0,3.5.0.I20090525-2000,org.eclipse.core.contenttype:0.0.0,3.4.0.v20090429-1800,org.eclipse.core.databinding:0.0.0,1.2.0.I20090604-2000,org.eclipse.core.databinding.observable:0.0.0,1.2.0.I20090604-2000,org.eclipse.core.databinding.property:0.0.0,1.2.0.I20090526-2000,org.eclipse.core.expressions:0.0.0,3.4.100.v20090429-1800,org.eclipse.core.jobs:0.0.0,3.4.100.v20090429-1800,org.eclipse.core.runtime:0.0.0,3.5.0.v20090525,org.eclipse.core.runtime.compatibility.registry:0.0.0,3.2.200.v20090429-1800,org.eclipse.equinox.app:0.0.0,1.2.0.v20090520-1800,org.eclipse.equinox.common:0.0.0,3.5.0.v20090520-1800,org.eclipse.equinox.preferences:0.0.0,3.2.300.v20090520-1800,org.eclipse.equinox.registry:0.0.0,3.4.100.v20090520-1800,org.eclipse.help:0.0.0,3.4.0.v20090526,org.eclipse.jface:0.0.0,3.5.0.I20090525-2000,org.eclipse.jface.databinding:0.0.0,1.3.0.I20090525-2000,org.eclipse.osgi:0.0.0,3.5.0.v20090520,org.eclipse.swt:0.0.0,3.5.0.v3550b,org.eclipse.swt.cocoa.macosx:0.0.0,3.5.0.v3550b,org.eclipse.ui:0.0.0,3.5.0.I20090604-2000,org.eclipse.ui.cocoa:0.0.0,1.0.0.I20090525-2000,org.eclipse.ui.workbench:0.0.0,3.5.0.I20090603-2000,"/>
+		<condition property="mode" value="incremental" else="final"		>
+			<isset property="runPackager"/>
+		</condition>
+		<property name="p2.append" value="true"/>
+		<property name="p2.metadata.repo.name" value=""/>
+		<property name="p2.artifact.repo.name" value=""/>
+		<p2.generator  append="${p2.append}" flavor="${p2.flavor}" metadataRepository="${p2.metadata.repo}" artifactRepository="${p2.artifact.repo}" metadataRepositoryName="${p2.metadata.repo.name}" artifactRepositoryName="${p2.artifact.repo.name}" publishArtifacts="${p2.publish.artifacts}" mode="${mode}" productFile="/Users/Rene/workspaces/gradle/github/gradleplugins/pdePlugin/src/samples/productpluginsbuild/ProductOnPluginsExample/build/work/features/org.eclipse.pde.build.container.feature/product/simplemailproduct.product" versionAdvice="/Users/Rene/workspaces/gradle/github/gradleplugins/pdePlugin/src/samples/productpluginsbuild/ProductOnPluginsExample/build/work/finalPluginsVersions.properties"		/>
+	</target>
+</project>
