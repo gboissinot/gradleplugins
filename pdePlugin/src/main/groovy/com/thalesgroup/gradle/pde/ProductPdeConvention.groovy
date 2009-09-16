@@ -46,7 +46,8 @@ public class ProductPdeConvention {
     String linksSrcDirectory
     String buildId
     String publishDirectory  
-    String jobVersion     
+    String jobVersion
+    String envConfigs
 	    	
 
     ProductPdeConvention(Project project, Map customValues) {

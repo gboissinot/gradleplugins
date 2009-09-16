@@ -37,6 +37,7 @@ class AntProductResource {
 	String buildId,
 	String eclipseLocation,
 	String version,
+	String envConfigs,
 	AntBuilder ant) {
 		
 		File fBuilderDir = new File(builderDir);
@@ -52,7 +53,8 @@ class AntProductResource {
 				
 				new ReplaceElt("gradleEclipseBase", base),
 				new ReplaceElt("gradleBuildDirectory", buildDirectory),
-				new ReplaceElt("gradleBuildId", buildId)
+				new ReplaceElt("gradleBuildId", buildId),
+				new ReplaceElt("gradleConfigs", envConfigs)
 				]);
 		buildPropertiesIs.close();	
 		

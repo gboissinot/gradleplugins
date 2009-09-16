@@ -60,6 +60,7 @@ public class ResourceProductTask extends CommonTask {
 				 productPdeConvention.getBuildId(),
 				 productPdeConvention.getEclipseLocation(),
 				 productPdeConvention.getJobVersion(),
+				 productPdeConvention.getEnvConfigs(),
 				 getAnt());  
   }
 

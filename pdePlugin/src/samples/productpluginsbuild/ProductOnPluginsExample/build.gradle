@@ -11,7 +11,7 @@ buildscript {
 
 configure(productPde){	
 	def projectDir = getRootDir()
-	
+	envConfigs = "macosx, cocoa, x86"
 	buildDirectory = "${projectDir}/build/work"
 	publishDirectory = "${projectDir}/build"	
 	pluginsSrcDirList = ["${projectDir}/.."]
