@@ -27,6 +27,6 @@ configure(notification){
 }
 
 
-task release(dependsOn: 'dists') << { 
+task release(dependsOn: 'assemble') << { 
     println 'We release now' 
 } 

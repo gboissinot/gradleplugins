@@ -28,16 +28,16 @@ public class NotificationPlugin implements Plugin {
 		final NotifyConfiguration config = new NotifyConfiguration()
 		project.setProperty("notification", config);
 		project.afterEvaluate{ proj -> 
-        	proj.getBuild().getTaskGraph().whenReady {
+        	proj.gradle.getTaskGraph().whenReady {
 		 		Task notifyableTask
 				if(config.task){
-					notifyableTask = proj.getBuild().getTaskGraph().getAllTasks().find { it.name == config.task };					
+					notifyableTask = proj.gradle.getTaskGraph().getAllTasks().find { it.name == config.task };					
 					if(!notifyableTask){
 						org.slf4j.LoggerFactory.getLogger(NotificationPlugin.class).warn("Task ${config.task} not in TaskGraph")
 					}
 				}
 				else{ //no task specified for notification. take the last one in the taskGraph
-					notifyableTask = proj.getBuild().getTaskGraph().getAllTasks().last();					
+					notifyableTask = proj.gradle.getTaskGraph().getAllTasks().last();					
 				}
 		 		
 				if(notifyableTask){
