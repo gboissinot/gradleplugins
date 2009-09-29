@@ -77,7 +77,7 @@
          id="product"
          point="org.eclipse.core.runtime.products">
       <product
-            application="SimpleMailExample.application"
+            application="ProductOnPluginsExample.application"
             name="SimpleMailExampleProduct">
          <property
                name="aboutText"

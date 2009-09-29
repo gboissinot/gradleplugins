@@ -8,7 +8,9 @@ repositories {
 
 
 dependencies {
-   groovy ":groovy-all:1.5.6"
+   groovy ":groovy-all:1.6.4"
    groovy ":gradle-core:0.8"
    groovy ":slf4j-api:1.5.3"
+   groovy ":logback-classic:0.9.9"
+   groovy ":logback-core:0.9.9"
 }

@@ -21,6 +21,6 @@ configure(productPde){
 	baseLocation = "/Users/Rene/workspaces/gradle/github/eclipse"	
 	eclipseLocation = "/Users/Rene/workspaces/gradle/github/eclipse"
 	equinoxLauncherPluginVersion = "1.0.200.v20090520"
-	pdeBuildPluginVersion = "3.5.0.v20090527-1800"
+	pdeBuildPluginVersion = "3.5.1.R35x_20090820"
 	productName = "/ProductOnPluginsExample/simplemailproduct.product"	
 }
