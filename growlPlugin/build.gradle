@@ -6,11 +6,6 @@ version=1.0
 
 
 repositories {
-	mavenCentral()
-    add(new URLResolver()) {
-        name = 'sf_gradleRepo'
-     		addArtifactPattern('http://gradle.sourceforge.net/gradleRepo/[organisation]/[module](/[branch])/[type]s/[artifact]-[revision](-[classifier])(.[ext])')
-	}
 	
 	add(new URLResolver()) {
         name = 'breskeby-Repo'
