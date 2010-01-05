@@ -30,7 +30,6 @@ import org.gradle.api.Action;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
 import org.gradle.api.plugins.Convention;
-import org.gradle.api.plugins.ProjectPluginsContainer;
 
 import com.thalesgroup.gradle.pde.tasks.product.CleanProductTask;
 import com.thalesgroup.gradle.pde.tasks.product.DeployProductTask;
@@ -40,7 +39,7 @@ import com.thalesgroup.gradle.pde.tasks.product.ResourceProductTask;
 
 
 
-public class ProductPdeBuild implements Plugin {
+public class ProductPdeBuild implements Plugin<Project> {
 
     public static final String CLEAN_TASK_NAME             = "clean";
     public static final String INIT_TASK_NAME              = "init";
@@ -48,8 +47,7 @@ public class ProductPdeBuild implements Plugin {
     public static final String PDE_BUILD_TASK_NAME         = "pdeBuild";    
     public static final String DEPLOY_TASK_NAME            = "deploy";
 
-
-    public void use(Project project, ProjectPluginsContainer container) {
+    public void use(final Project project) {
 	   	HashMap<String, String> customValues = new HashMap<String,String>();
 	   	//project.setProperty("notification", config);
 		

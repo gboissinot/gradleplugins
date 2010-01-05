@@ -26,9 +26,9 @@ package com.thalesgroup.gradle.pde.tasks.feature;
 
 import org.gradle.api.Project;
 import org.gradle.api.Task;
-import org.gradle.api.TaskAction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.gradle.api.tasks.TaskAction;
 
 import com.thalesgroup.gradle.pde.FeaturePdeConvention;
 import com.thalesgroup.gradle.pde.tasks.AntPdeInit;
@@ -40,15 +40,11 @@ public class InitFeatureTask extends CommonTask {
   private static Logger logger = LoggerFactory.getLogger(InitFeatureTask.class);
 
   public InitFeatureTask(final Project project, String name) {
-	super();
-        doFirst(new TaskAction() {
-           public void execute(Task task) {
-              generate(project,task);
-           }
-        });
+	super(project);
   }
 
-  protected void generate(final Project project,Task task) {
+  @TaskAction
+  protected void generate() {
 
      FeaturePdeConvention featurePdeConvention = featurePde(project.getConvention());
 

@@ -24,7 +24,7 @@
 package com.thalesgroup.gradle.pde.tasks.product;
 
 import org.gradle.api.*;
-import org.gradle.api.tasks.util.ExistingDirsFilter;
+import org.gradle.api.tasks.TaskAction;
 import java.util.ArrayList;
 import java.util.List;
 import org.slf4j.Logger;
@@ -41,24 +41,19 @@ public class DeployProductTask extends CommonTask {
 
 
   public DeployProductTask(final Project project, String name) {
-	super();
-//        setActions(new ArrayList<TaskAction>());
-        doFirst(new TaskAction() {
-           public void execute(Task task) {
-              generate(project, task);
-           }
-        });
+	super(project);
   }
 
-  protected void generate(Project project, Task task) {
+  @TaskAction
+  protected void generate() {
 
      ProductPdeConvention productPdeConvention = productPde(project.getConvention());
 
      new AntProductDeploy().execute( 				
-				productPdeConvention.getBuildId(),
-				productPdeConvention.getBuildDirectory(),
-				productPdeConvention.getPublishDirectory(),
-				getAnt());
+			productPdeConvention.getBuildId(),
+			productPdeConvention.getBuildDirectory(),
+			productPdeConvention.getPublishDirectory(),				
+			getAnt());
   }
 
 }
