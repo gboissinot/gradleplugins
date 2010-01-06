@@ -40,14 +40,10 @@ public class PdeProductTask extends CommonTask {
 
   private static Logger logger = LoggerFactory.getLogger(PdeProductTask.class);
 
-  public PdeProductTask(final Project project, String name) {
-	super(project);
-  }
- 
   @TaskAction
   protected void generate() {
 
-     ProductPdeConvention productPdeConvention = productPde(project.getConvention());
+     ProductPdeConvention productPdeConvention = getProductPdeConvention();
 
      new AntProductPde().execute( 
 				productPdeConvention.getEclipseLocation(),

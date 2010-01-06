@@ -40,15 +40,10 @@ public class DeployFeatureTask extends CommonTask {
 
   private static Logger logger = LoggerFactory.getLogger(DeployFeatureTask.class);
 
-
-  public DeployFeatureTask(final Project project, String name) {
-	super(project);
-  }
-
   @TaskAction
   protected void generate() {
 
-     FeaturePdeConvention featurePdeConvention = featurePde(project.getConvention());
+     FeaturePdeConvention featurePdeConvention = getFeaturePdeConvention();
 
      new AntFeatureDeploy().execute( 
 				featurePdeConvention.getFeatureName(),

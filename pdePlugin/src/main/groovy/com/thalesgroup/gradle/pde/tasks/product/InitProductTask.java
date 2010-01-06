@@ -39,22 +39,18 @@ public class InitProductTask extends CommonTask {
 
   private static Logger logger = LoggerFactory.getLogger(InitProductTask.class);
 
-  public InitProductTask(final Project project, String name) {
-	super(project);
-  }
-
   @TaskAction
   protected void generate() {
 
-     ProductPdeConvention productPdeConvention = productPde(project.getConvention());
+     ProductPdeConvention productPdeConvention = getProductPdeConvention();
 
      new AntPdeInit().execute( 	productPdeConvention.getBuildDirectory(),
 			productPdeConvention.getBuilderDir(),
 			productPdeConvention.getPluginsSrcDirList(),
 			productPdeConvention.getFeaturesSrcDir(),
 			productPdeConvention.getPublishDirectory(),
-                        productPdeConvention.getEclipseLocation(),
-                        productPdeConvention.getLinksSrcDirectory(),
+			productPdeConvention.getEclipseLocation(),
+			productPdeConvention.getLinksSrcDirectory(),
 			getAnt());  
   }
 

@@ -39,15 +39,10 @@ public class DeployProductTask extends CommonTask {
 
   private static Logger logger = LoggerFactory.getLogger(DeployProductTask.class);
 
-
-  public DeployProductTask(final Project project, String name) {
-	super(project);
-  }
-
   @TaskAction
   protected void generate() {
 
-     ProductPdeConvention productPdeConvention = productPde(project.getConvention());
+     ProductPdeConvention productPdeConvention = getProductPdeConvention();
 
      new AntProductDeploy().execute( 				
 			productPdeConvention.getBuildId(),

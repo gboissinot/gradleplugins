@@ -39,14 +39,10 @@ public class InitFeatureTask extends CommonTask {
 
   private static Logger logger = LoggerFactory.getLogger(InitFeatureTask.class);
 
-  public InitFeatureTask(final Project project, String name) {
-	super(project);
-  }
-
   @TaskAction
   protected void generate() {
 
-     FeaturePdeConvention featurePdeConvention = featurePde(project.getConvention());
+     FeaturePdeConvention featurePdeConvention = getFeaturePdeConvention();
 
      System.out.println(featurePdeConvention);
      new AntPdeInit().execute( 

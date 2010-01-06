@@ -36,14 +36,10 @@ import com.thalesgroup.gradle.pde.tasks.CommonTask;
 public class CleanFeatureTask extends CommonTask {
 
   private static Logger logger = LoggerFactory.getLogger(CleanFeatureTask.class);
- 
-  public CleanFeatureTask(final Project project, String name) {
-	super(project);
-  }
 
   @TaskAction
   protected void generate() {
-     FeaturePdeConvention featurePdeConvention = featurePde(project.getConvention());
+     FeaturePdeConvention featurePdeConvention = getFeaturePdeConvention();
      new AntPdeClean().execute(featurePdeConvention.getBuildDirectory(),getAnt());  
   }
 

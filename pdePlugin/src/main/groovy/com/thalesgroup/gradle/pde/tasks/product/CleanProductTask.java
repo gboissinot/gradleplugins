@@ -38,14 +38,10 @@ import com.thalesgroup.gradle.pde.tasks.CommonTask;
 public class CleanProductTask extends CommonTask {
 
   private static Logger logger = LoggerFactory.getLogger(CleanProductTask.class);
-
-  public CleanProductTask(final Project project, String name) {
-	super(project);
-  }
   
   @TaskAction
   protected void generate() {
-	 ProductPdeConvention productPdeConvention = productPde(project.getConvention());
+	 ProductPdeConvention productPdeConvention = getProductPdeConvention();
      new AntPdeClean().execute(productPdeConvention.getBuildDirectory(),getAnt());
   }
 

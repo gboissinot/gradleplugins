@@ -40,14 +40,10 @@ public class PdeFeatureTask extends CommonTask {
 
   private static Logger logger = LoggerFactory.getLogger(PdeFeatureTask.class);
 
-  public PdeFeatureTask(final Project project, String name) {
-	super(project);
-  }
-  
   @TaskAction
   protected void generate() {
 
-     FeaturePdeConvention featurePdeConvention = featurePde(project.getConvention());
+     FeaturePdeConvention featurePdeConvention = getFeaturePdeConvention();
 
      new AntFeaturePde().execute( 
 				featurePdeConvention.getEclipseLocation(),

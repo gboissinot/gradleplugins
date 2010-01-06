@@ -37,15 +37,9 @@ public class ResourceProductTask extends CommonTask {
 
   private static Logger logger = LoggerFactory.getLogger(ResourceProductTask.class);
 
-  public ResourceProductTask(final Project project, String name) {
-	super(project);
-  }
-
   @TaskAction
   protected void generate() {
-
-     ProductPdeConvention productPdeConvention = productPde(project.getConvention());
-           
+     ProductPdeConvention productPdeConvention = getProductPdeConvention();
      new AntProductResource().execute( 
 				 productPdeConvention.getBase(),				 
 				 productPdeConvention.getBuildDirectory(),

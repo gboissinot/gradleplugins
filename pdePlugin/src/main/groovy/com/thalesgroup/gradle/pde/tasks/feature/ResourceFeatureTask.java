@@ -40,33 +40,20 @@ public class ResourceFeatureTask extends CommonTask {
 
   private static Logger logger = LoggerFactory.getLogger(ResourceFeatureTask.class);
 
-  public ResourceFeatureTask(final Project project, String name) {
-	super(project);
-  }
-
-  @TaskAction
+ @TaskAction
   protected void generate() {
 
-           FeaturePdeConvention featurePdeConvention = featurePde(project.getConvention());
-           System.out.println("generate ResourceFeatureTask");
-       	
-           System.out.println ( featurePdeConvention.getBase() );
-           System.out.println ( featurePdeConvention.getBuildDirectory() );
-           System.out.println ( featurePdeConvention.getBuilderDir() );
-           System.out.println ( featurePdeConvention.getFeatureName() );
-           System.out.println ( featurePdeConvention.getBuildId() );
-           System.out.println ( featurePdeConvention.getEclipseLocation() );
-           System.out.println ( featurePdeConvention.getJobVersion() );
-
-	   new AntFeatureResource().execute( 
-				 featurePdeConvention.getBase(),				 
-				 featurePdeConvention.getBuildDirectory(),
-				 featurePdeConvention.getBuilderDir(),
-				 featurePdeConvention.getFeatureName(),
-				 featurePdeConvention.getBuildId(),
-				 featurePdeConvention.getEclipseLocation(),
-				 featurePdeConvention.getJobVersion(),
-				 getAnt());  
+	FeaturePdeConvention featurePdeConvention = getFeaturePdeConvention();
+  
+	new AntFeatureResource().execute( 
+		featurePdeConvention.getBase(),				 
+		featurePdeConvention.getBuildDirectory(),
+		featurePdeConvention.getBuilderDir(),
+		featurePdeConvention.getFeatureName(),
+		featurePdeConvention.getBuildId(),
+		featurePdeConvention.getEclipseLocation(),
+		featurePdeConvention.getJobVersion(),
+		getAnt());  
   }
 
 }
