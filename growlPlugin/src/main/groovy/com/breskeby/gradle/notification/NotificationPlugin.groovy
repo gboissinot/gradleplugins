@@ -7,7 +7,6 @@ import org.gradle.api.plugins.BasePluginConvention;
 import org.gradle.api.plugins.JavaPlugin;
 import org.gradle.api.plugins.JavaPluginConvention;
 
-import org.gradle.api.plugins.ProjectPluginsContainer;
 import org.gradle.api.tasks.bundling.Jar;
 import org.gradle.api.execution.*
 import java.io.File;
@@ -22,9 +21,9 @@ import com.breskeby.gradle.notification.growl.GrowlNotification
  *
  * @author Rene Groeschke
  */
-public class NotificationPlugin implements Plugin {
+public class NotificationPlugin implements Plugin<Project> {
     
-	public void use(Project project, ProjectPluginsContainer projectPluginsHandler) {
+	public void use(final Project project) {
 		final NotifyConfiguration config = new NotifyConfiguration()
 		project.setProperty("notification", config);
 		project.afterEvaluate{ proj -> 

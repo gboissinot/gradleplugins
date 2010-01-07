@@ -6,6 +6,6 @@ import com.breskeby.gradle.notification.NotifyConfiguration
 
 import org.gradle.api.Task
 
-public abstract class AbstractNotificationTask extends DefaultTask {
+public abstract class AbstractNotificationTask {
 	public abstract void sendNotification(String message);
 }
