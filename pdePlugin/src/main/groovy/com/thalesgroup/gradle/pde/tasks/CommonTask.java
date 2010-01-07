@@ -25,7 +25,6 @@ package com.thalesgroup.gradle.pde.tasks;
 
 import java.util.Map;
 
-import org.gradle.api.Project;
 import org.gradle.api.internal.ConventionTask;
 import org.gradle.api.plugins.Convention;
 
@@ -36,8 +35,8 @@ public class CommonTask extends ConventionTask {
 
   private Map<String, ?> customValues;
 
-  public CommonTask(final Project project, String name) {
-	super(project, name);
+  public CommonTask() {
+	super();
   }	
 
   public void setCustomValues(Map<String, ?> customValues){

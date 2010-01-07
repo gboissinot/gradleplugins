@@ -23,26 +23,20 @@
 
 package com.thalesgroup.gradle.pde;
 
+import java.util.HashMap;
 import java.util.Map;
-import java.io.File;
 
-import org.gradle.api.*;
+import org.gradle.api.Action;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
-import org.gradle.api.internal.project.PluginRegistry;
-import org.gradle.util.GUtil;
-import org.gradle.api.tasks.ConventionValue;
-import org.gradle.api.internal.IConventionAware;
 import org.gradle.api.plugins.Convention;
-import org.gradle.api.plugins.BasePlugin;
+import org.gradle.api.plugins.ProjectPluginsContainer;
 
 import com.thalesgroup.gradle.pde.tasks.feature.CleanFeatureTask;
-import com.thalesgroup.gradle.pde.tasks.feature.InitFeatureTask;
-import com.thalesgroup.gradle.pde.tasks.feature.ResourceFeatureTask;
-import com.thalesgroup.gradle.pde.tasks.feature.PdeFeatureTask;
 import com.thalesgroup.gradle.pde.tasks.feature.DeployFeatureTask;
-
-import com.thalesgroup.gradle.pde.FeaturePdeConvention;
+import com.thalesgroup.gradle.pde.tasks.feature.InitFeatureTask;
+import com.thalesgroup.gradle.pde.tasks.feature.PdeFeatureTask;
+import com.thalesgroup.gradle.pde.tasks.feature.ResourceFeatureTask;
 
 
 
@@ -54,21 +48,19 @@ public class FeaturePdeBuild implements Plugin {
     public static final String PDE_BUILD_TASK_NAME         = "pdeBuild";    
     public static final String DEPLOY_TASK_NAME            = "deploy";
 
-
-    public void apply(Project project, PluginRegistry pluginRegistry, final Map<String, ?> customValues) {
-
-	//pluginRegistry.apply(BasePlugin.class, project, customValues);
-
-        FeaturePdeConvention featurePdeConvention = new FeaturePdeConvention(project, customValues);
+    public void use(Project project, ProjectPluginsContainer container) {
+	   	HashMap<String, ?> customValues = new HashMap<String,String>();
+	   	FeaturePdeConvention featurePdeConvention = new FeaturePdeConvention(project, customValues);
         Convention convention = project.getConvention();
         convention.getPlugins().put("featurePde", featurePdeConvention);
 
-	configureClean(project,customValues);
-	configureInit(project,customValues);
-	configureProcessResources(project,customValues);
-	configurePdeBuild(project,customValues);
-	configureDeploy(project,customValues);
-    }
+        project.setProperty("featurePde", featurePdeConvention);
+        configureClean(project,customValues);
+        configureInit(project,customValues);
+        configureProcessResources(project,customValues);
+        configurePdeBuild(project,customValues);
+        configureDeploy(project,customValues);
+	}
 
     private void configureClean(Project project, final Map<String, ?> customValues) {
 	
@@ -126,7 +118,5 @@ public class FeaturePdeBuild implements Plugin {
         });
         project.getTasks().add(DEPLOY_TASK_NAME, DeployFeatureTask.class).setDescription("Deploying...");
    }
-
-
 }
 

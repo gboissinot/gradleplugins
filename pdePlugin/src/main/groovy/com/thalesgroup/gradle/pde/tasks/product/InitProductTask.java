@@ -25,26 +25,23 @@
 package com.thalesgroup.gradle.pde.tasks.product;
 
 
-import org.gradle.api.*;
-import org.gradle.api.internal.ConventionTask;
-import org.gradle.api.tasks.util.ExistingDirsFilter;
-import java.util.ArrayList;
-import java.util.List;
+import org.gradle.api.Project;
+import org.gradle.api.Task;
+import org.gradle.api.TaskAction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
+import com.thalesgroup.gradle.pde.ProductPdeConvention;
 import com.thalesgroup.gradle.pde.tasks.AntPdeInit;
 import com.thalesgroup.gradle.pde.tasks.CommonTask;
-import com.thalesgroup.gradle.pde.ProductPdeConvention;
 
 public class InitProductTask extends CommonTask {
 
   private static Logger logger = LoggerFactory.getLogger(InitProductTask.class);
 
   public InitProductTask(final Project project, String name) {
-	super(project, name);
-        setActions(new ArrayList<TaskAction>());
+	super();
+//        setActions(new ArrayList<TaskAction>());
         doFirst(new TaskAction() {
            public void execute(Task task) {
               generate(project,task);
@@ -56,8 +53,7 @@ public class InitProductTask extends CommonTask {
 
      ProductPdeConvention productPdeConvention = productPde(project.getConvention());
 
-     new AntPdeInit().execute( 
-			productPdeConvention.getBuildDirectory(),
+     new AntPdeInit().execute( 	productPdeConvention.getBuildDirectory(),
 			productPdeConvention.getBuilderDir(),
 			productPdeConvention.getPluginsSrcDirList(),
 			productPdeConvention.getFeaturesSrcDir(),

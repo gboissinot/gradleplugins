@@ -41,8 +41,8 @@ public class DeployProductTask extends CommonTask {
 
 
   public DeployProductTask(final Project project, String name) {
-	super(project, name);
-        setActions(new ArrayList<TaskAction>());
+	super();
+//        setActions(new ArrayList<TaskAction>());
         doFirst(new TaskAction() {
            public void execute(Task task) {
               generate(project, task);

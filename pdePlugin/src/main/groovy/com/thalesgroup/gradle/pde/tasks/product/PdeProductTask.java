@@ -40,8 +40,8 @@ public class PdeProductTask extends CommonTask {
   private static Logger logger = LoggerFactory.getLogger(PdeProductTask.class);
 
   public PdeProductTask(final Project project, String name) {
-	super(project, name);
-        setActions(new ArrayList<TaskAction>());
+	super();
+        //setActions(new ArrayList<TaskAction>());
         doFirst(new TaskAction() {
            public void execute(Task task) {
               generate(project, task);

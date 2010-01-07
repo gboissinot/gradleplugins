@@ -2,13 +2,6 @@ usePlugin('groovy')
 
 version=1.0
 
-repositories {
-  flatDir(dirs: file('lib'))
-}
-
-
 dependencies {
-   groovy ":groovy-all:1.5.6"
-   groovy ":gradle:0.6.1"
-   groovy ":slf4j-api:1.5.3"
+	groovy files(org.gradle.util.BootstrapUtil.gradleClasspath)
 }

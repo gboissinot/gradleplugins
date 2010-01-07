@@ -23,9 +23,7 @@
 
 package com.thalesgroup.gradle.pde;
 
-import org.gradle.api.JavaVersion
 import org.gradle.api.Project
-import org.gradle.api.internal.plugins.PluginUtil
 
 
 public class FeaturePdeConvention {
@@ -51,10 +49,5 @@ public class FeaturePdeConvention {
 
     FeaturePdeConvention(Project project, Map customValues) {
         this.project = project
-	PluginUtil.applyCustomValues(project.convention, this, customValues)
-    }
-
-
-     
-
+   }
 }

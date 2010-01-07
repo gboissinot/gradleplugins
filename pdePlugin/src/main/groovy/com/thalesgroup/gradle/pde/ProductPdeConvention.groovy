@@ -25,7 +25,7 @@ package com.thalesgroup.gradle.pde;
 
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
-import org.gradle.api.internal.plugins.PluginUtil
+//import org.gradle.api.internal.plugins.PluginUtil
 
 
 public class ProductPdeConvention {
@@ -46,15 +46,11 @@ public class ProductPdeConvention {
     String linksSrcDirectory
     String buildId
     String publishDirectory  
-    String jobVersion     
+    String jobVersion
+    String envConfigs
 	    	
 
     ProductPdeConvention(Project project, Map customValues) {
         this.project = project
-	PluginUtil.applyCustomValues(project.convention, this, customValues)
-    }
-
-
-     
-
+   }
 }

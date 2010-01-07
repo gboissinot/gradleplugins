@@ -41,8 +41,8 @@ public class ResourceFeatureTask extends CommonTask {
   private static Logger logger = LoggerFactory.getLogger(ResourceFeatureTask.class);
 
   public ResourceFeatureTask(final Project project, String name) {
-	super(project, name);
-        setActions(new ArrayList<TaskAction>());
+	super();
+        //setActions(new ArrayList<TaskAction>());
         doFirst(new TaskAction() {
            public void execute(Task task) {
               generate(project, task);
@@ -53,7 +53,8 @@ public class ResourceFeatureTask extends CommonTask {
   protected void generate(Project project, Task task) {
 
            FeaturePdeConvention featurePdeConvention = featurePde(project.getConvention());
-	 
+           System.out.println("generate ResourceFeatureTask");
+       	
            System.out.println ( featurePdeConvention.getBase() );
            System.out.println ( featurePdeConvention.getBuildDirectory() );
            System.out.println ( featurePdeConvention.getBuilderDir() );

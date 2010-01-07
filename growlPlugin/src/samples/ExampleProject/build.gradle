@@ -1,0 +1,32 @@
+import org.apache.ivy.plugins.resolver.*
+
+usePlugin 'java'
+usePlugin(com.breskeby.gradle.notification.NotificationPlugin)
+
+buildscript { 
+    repositories { 
+		flatDir(dirs: "../../../build/libs")
+    	add(new URLResolver()) {
+	        name = 'breskeby-Repo'
+	        addArtifactPattern('http://breskeby.com/repo/[module](/[branch])/[type]s/[artifact]-[revision](-[classifier])(.[ext])')
+		}
+	} 
+    dependencies { 
+		classpath ":growl-api:0.1"
+        classpath ':growlPlugin:1.0' 
+    } 
+}
+
+
+group = 'org.acme' 
+version = '0.1' 
+
+configure(notification){
+	task = "release" //optional property
+	message = "We release now" //optional property
+}
+
+
+task release(dependsOn: 'assemble') << { 
+    println 'We release now' 
+} 
