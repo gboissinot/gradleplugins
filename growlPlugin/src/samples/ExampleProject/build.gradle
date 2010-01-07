@@ -1,7 +1,7 @@
 import org.apache.ivy.plugins.resolver.*
 
-usePlugin 'java'
-usePlugin(com.breskeby.gradle.notification.NotificationPlugin)
+apply id:'java'
+apply id:'growl'
 
 buildscript { 
     repositories { 

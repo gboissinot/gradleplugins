@@ -1,4 +1,4 @@
-usePlugin(com.thalesgroup.gradle.pde.ProductPdeBuild)
+apply id: "ProductPde"
 
 buildscript { 
     repositories { 
