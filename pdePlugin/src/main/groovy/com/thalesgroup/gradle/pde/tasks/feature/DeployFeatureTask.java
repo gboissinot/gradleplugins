@@ -26,7 +26,7 @@ package com.thalesgroup.gradle.pde.tasks.feature;
 
 
 import org.gradle.api.*;
-import org.gradle.api.tasks.util.ExistingDirsFilter;
+import org.gradle.api.tasks.TaskAction;
 import java.util.ArrayList;
 import java.util.List;
 import org.slf4j.Logger;
@@ -40,20 +40,10 @@ public class DeployFeatureTask extends CommonTask {
 
   private static Logger logger = LoggerFactory.getLogger(DeployFeatureTask.class);
 
+  @TaskAction
+  protected void generate() {
 
-  public DeployFeatureTask(final Project project, String name) {
-	super();
-//        setActions(new ArrayList<TaskAction>());
-        doFirst(new TaskAction() {
-           public void execute(Task task) {
-              generate(project, task);
-           }
-        });
-  }
-
-  protected void generate(Project project, Task task) {
-
-     FeaturePdeConvention featurePdeConvention = featurePde(project.getConvention());
+     FeaturePdeConvention featurePdeConvention = getFeaturePdeConvention();
 
      new AntFeatureDeploy().execute( 
 				featurePdeConvention.getFeatureName(),

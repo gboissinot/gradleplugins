@@ -1,7 +1,7 @@
 package com.breskeby.gradle.notification.growl;
 
 
-
+import org.gradle.api.tasks.TaskAction
 import info.growl.Growl;
 import info.growl.GrowlException;
 import info.growl.GrowlUtils;
@@ -10,12 +10,7 @@ import com.breskeby.gradle.notification.AbstractNotificationTask;
 import com.breskeby.gradle.notification.NotifyConfiguration
 
 public class GrowlNotification extends AbstractNotificationTask{
-	
-	public GrowlNotification(){
-		
-	}
-	
-	    
+    
     private void loadNativeGrowlLib(){
     	File f = null;
     	 try{
@@ -33,12 +28,8 @@ public class GrowlNotification extends AbstractNotificationTask{
     	 }	
 	}
 	
-	@Override
-	public void execute() {
-		super.execute();
-		sendNotification("Growl notification");
-	}
-	
+
+	@TaskAction
 	public void sendNotification(String message) {
 		loadNativeGrowlLib()
 		Growl growl = GrowlUtils.getGrowlInstance("Gradle");

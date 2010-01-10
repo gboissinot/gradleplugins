@@ -25,6 +25,7 @@ package com.thalesgroup.gradle.pde.tasks;
 
 import java.util.Map;
 
+import org.gradle.api.Project;
 import org.gradle.api.internal.ConventionTask;
 import org.gradle.api.plugins.Convention;
 
@@ -34,11 +35,7 @@ import com.thalesgroup.gradle.pde.ProductPdeConvention;
 public class CommonTask extends ConventionTask {
 
   private Map<String, ?> customValues;
-
-  public CommonTask() {
-	super();
-  }	
-
+  
   public void setCustomValues(Map<String, ?> customValues){
         this.customValues=customValues;
   }
@@ -47,12 +44,12 @@ public class CommonTask extends ConventionTask {
    	return String.valueOf(customValues.get(property));
   }
 
-  protected FeaturePdeConvention featurePde(Convention convention) {
-	return (FeaturePdeConvention)convention.getPlugins().get("featurePde");
+  protected FeaturePdeConvention getFeaturePdeConvention() {
+	return (FeaturePdeConvention)getProject().getConvention().getPlugins().get("featurePde");
   }
 
-  protected ProductPdeConvention productPde(Convention convention) {
-	return (ProductPdeConvention)convention.getPlugins().get("productPde");
+  protected ProductPdeConvention getProductPdeConvention(){
+	return (ProductPdeConvention)getProject().getConvention().getPlugins().get("productPde");
   }
 
 }

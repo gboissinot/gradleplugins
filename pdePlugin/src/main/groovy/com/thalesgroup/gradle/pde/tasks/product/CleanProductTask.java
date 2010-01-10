@@ -27,7 +27,7 @@ package com.thalesgroup.gradle.pde.tasks.product;
 
 import org.gradle.api.Project;
 import org.gradle.api.Task;
-import org.gradle.api.TaskAction;
+import org.gradle.api.tasks.TaskAction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,18 +38,10 @@ import com.thalesgroup.gradle.pde.tasks.CommonTask;
 public class CleanProductTask extends CommonTask {
 
   private static Logger logger = LoggerFactory.getLogger(CleanProductTask.class);
-
-  public CleanProductTask(final Project project, String name) {
-	super();
-    doFirst(new TaskAction() {
-    	public void execute(Task task) {
-    		generate(project,task);
-    	}
-    });
-  }
-
-  protected void generate(final Project project,Task task) {
-	 ProductPdeConvention productPdeConvention = productPde(project.getConvention());
+  
+  @TaskAction
+  protected void generate() {
+	 ProductPdeConvention productPdeConvention = getProductPdeConvention();
      new AntPdeClean().execute(productPdeConvention.getBuildDirectory(),getAnt());
   }
 
