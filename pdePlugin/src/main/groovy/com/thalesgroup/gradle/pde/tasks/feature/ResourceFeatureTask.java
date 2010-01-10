@@ -53,6 +53,7 @@ public class ResourceFeatureTask extends CommonTask {
 		featurePdeConvention.getBuildId(),
 		featurePdeConvention.getEclipseLocation(),
 		featurePdeConvention.getJobVersion(),
+        featurePdeConvention.getEnvConfigs(),
 		getAnt());  
   }
 
