@@ -21,10 +21,10 @@
  * THE SOFTWARE.                                                                *
  ****************************************************************************** */
 
-package com.thalesgroup.gradle.pde.tasks.feature;
+package com.thalesgroup.gradle.pde.tasks.feature
 
 import com.thalesgroup.gradle.pde.tasks.AntUtil
-import com.thalesgroup.gradle.pde.tasks.ReplaceElt
+import com.thalesgroup.gradle.pde.tasks.ReplaceElt;
 
 class AntFeatureResource {
 
@@ -33,7 +33,7 @@ class AntFeatureResource {
                String builderDir,
                String featureName,
                String buildId,
-               String eclipseLocation,
+               String baseLocation,
                String version,
                String envConfigs,
                AntBuilder ant) {
@@ -44,8 +44,7 @@ class AntFeatureResource {
     fBuilderDir.mkdirs();
 
     buildDirectory = buildDirectory.replace('\\', '/')
-    builderDir = builderDir.replace('\\', '/')
-    eclipseLocation = eclipseLocation.replace('\\', '/')
+    baseLocation = baseLocation.replace('\\', '/')
 
     //allElements.xml
     java.io.InputStream allElementsIs = this.getClass().getResourceAsStream("/feature/allElements.xml");
@@ -60,8 +59,8 @@ class AntFeatureResource {
     buildPropertiesIs.close();
 
     //Links directory
-    def tempLinkDir = new File(buildDirectory + "/links")
-    def destLinkDir = new File(eclipseLocation, "links");
+    def tempLinkDir = new File(buildDirectory + "/dropins")
+    def destLinkDir = new File(baseLocation, "dropins");
     tempLinkDir.listFiles().each {File file ->
       FileInputStream fIs = new FileInputStream(file)
       AntUtil.processResource(fIs, destLinkDir, file.getName(), [new ReplaceElt("\\#\\{version\\}", version)]);

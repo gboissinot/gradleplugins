@@ -1,4 +1,4 @@
-/*******************************************************************************
+/** *****************************************************************************
  * Copyright (c) 2009 Thales Corporate Services SAS                             *
  * Author : Gregory Boissinot                                                   *
  *                                                                              *
@@ -19,53 +19,51 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,*
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN    *
  * THE SOFTWARE.                                                                *
- *******************************************************************************/
+ ****************************************************************************** */
 
 
-package com.thalesgroup.gradle.pde.tasks.product;
-
+package com.thalesgroup.gradle.pde.tasks.product
 
 import com.thalesgroup.gradle.pde.tasks.AntUtil
-import com.thalesgroup.gradle.pde.tasks.ReplaceElt
+import com.thalesgroup.gradle.pde.tasks.ReplaceElt;
+
 
 class AntProductResource {
-	
-	void execute(String base, 
-	String buildDirectory, 
-	String builderDir, 
-	String productName,
-	String buildId,
-	String eclipseLocation,
-	String version,
-	String envConfigs,
-	AntBuilder ant) {
-		
-		File fBuilderDir = new File(builderDir);
-		fBuilderDir.mkdirs();
-		
-		buildDirectory=buildDirectory.replace('\\','/')
-		builderDir=builderDir.replace('\\','/')
-		eclipseLocation=eclipseLocation.replace('\\','/')
-		
-		//build.properties
-		java.io.InputStream buildPropertiesIs = this.getClass().getResourceAsStream ("/product/build.properties");
-		AntUtil.processResource(buildPropertiesIs, fBuilderDir, "build.properties", [new ReplaceElt("gradleProductName",productName), 
-				
-				new ReplaceElt("gradleEclipseBase", base),
-				new ReplaceElt("gradleBuildDirectory", buildDirectory),
-				new ReplaceElt("gradleBuildId", buildId),
-				new ReplaceElt("gradleConfigs", envConfigs)
-				]);
-		buildPropertiesIs.close();	
-		
-		
-		//Links directory
-		def tempLinkDir=new File(buildDirectory+"/links")	
-		def destLinkDir=new File(eclipseLocation,"links");	
-		tempLinkDir.listFiles().each{ File file->
-			FileInputStream fIs = new FileInputStream(file)
-			AntUtil.processResource(fIs, destLinkDir, file.getName(), [new ReplaceElt("\\#\\{version\\}",version)]);
-			fIs.close();
-		}
-	}
+
+  void execute(String base,
+               String buildDirectory,
+               String builderDir,
+               String productName,
+               String buildId,
+               String baseLocation,
+               String version,
+               String envConfigs,
+               AntBuilder ant) {
+
+    File fBuilderDir = new File(builderDir);
+    fBuilderDir.mkdirs();
+
+    buildDirectory = buildDirectory.replace('\\', '/')
+    baseLocation = baseLocation.replace('\\', '/')
+
+    //build.properties
+    java.io.InputStream buildPropertiesIs = this.getClass().getResourceAsStream("/product/build.properties");
+    AntUtil.processResource(buildPropertiesIs, fBuilderDir, "build.properties", [new ReplaceElt("gradleProductName", productName),
+
+            new ReplaceElt("gradleEclipseBase", base),
+            new ReplaceElt("gradleBuildDirectory", buildDirectory),
+            new ReplaceElt("gradleBuildId", buildId),
+            new ReplaceElt("gradleConfigs", envConfigs)
+    ]);
+    buildPropertiesIs.close();
+
+    //Links directory
+    def tempLinkDir = new File(buildDirectory + "/dropins")
+    def destLinkDir = new File(baseLocation, "dropins");
+    tempLinkDir.listFiles().each {File file ->
+      FileInputStream fIs = new FileInputStream(file)
+      AntUtil.processResource(fIs, destLinkDir, file.getName(), [new ReplaceElt("\\#\\{version\\}", version)]);
+      fIs.close();
+    }
+  }
 }

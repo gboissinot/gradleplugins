@@ -31,13 +31,13 @@ void execute(	String buildDirectory,
 		List pluginsSrcDirList, 
 		String featuresSrcDir, 
 		String publishDirectory, 
-		String eclipseLocation,
+		String baseLocation,
 	        String linksSrcDirectory,
 		AntBuilder ant) {
 
 
-  //Create the destination links directory
-  def destLinkDir=eclipseLocation+"/links"
+  //Create the destination dropins directory
+  def destLinkDir=baseLocation+"/dropins"
   ant.mkdir(dir:destLinkDir)
 
   //Create the build directory
@@ -45,13 +45,15 @@ void execute(	String buildDirectory,
   ant.mkdir(dir:buildDirectory)
 
   //Create the temporary links directory
-  def tempLinkDir=buildDirectory+"/links"
+  def tempLinkDir=buildDirectory+"/dropins"
   ant.mkdir(dir:tempLinkDir)
 
-  ant.echo(message:'Copy the link directory')
+  ant.echo(message:'Copy the dropins directory')
   if(linksSrcDirectory){
 	  ant.copy(todir:tempLinkDir){
-		  fileset(dir:linksSrcDirectory)
+		  fileset(dir:linksSrcDirectory){
+            include(name:'*.link')            
+          }
 	  }	  
   }
 

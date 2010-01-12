@@ -41,11 +41,11 @@ import com.thalesgroup.gradle.pde.tasks.product.ResourceProductTask;
 
 public class ProductPdeBuild implements Plugin<Project> {
 
-    public static final String CLEAN_TASK_NAME             = "clean";
-    public static final String INIT_TASK_NAME              = "init";
-    public static final String PROCESS_RESOURCES_TASK_NAME = "processResources";
-    public static final String PDE_BUILD_TASK_NAME         = "pdeBuild";    
-    public static final String DEPLOY_TASK_NAME            = "deploy";
+    public static final String CLEAN_TASK_NAME             = "pdeClean";
+    public static final String INIT_TASK_NAME              = "initPde";
+    public static final String PROCESS_RESOURCES_TASK_NAME = "processPdeResources";
+    public static final String PDE_BUILD_TASK_NAME         = "pdeBuild";
+    public static final String UPLOAD_TASK_NAME            = "uploadPde";
 
     public void use(final Project project) {
 	   	HashMap<String, String> customValues = new HashMap<String,String>();
@@ -120,7 +120,7 @@ public class ProductPdeBuild implements Plugin<Project> {
 		task.dependsOn(PDE_BUILD_TASK_NAME);
             }
         });
-        project.getTasks().add(DEPLOY_TASK_NAME, DeployProductTask.class).setDescription("Deploying...");
+        project.getTasks().add(UPLOAD_TASK_NAME, DeployProductTask.class).setDescription("Deploying...");
    }
 
   

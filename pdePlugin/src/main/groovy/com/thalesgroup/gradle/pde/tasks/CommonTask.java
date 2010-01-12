@@ -24,10 +24,7 @@
 package com.thalesgroup.gradle.pde.tasks;
 
 import java.util.Map;
-
-import org.gradle.api.Project;
 import org.gradle.api.internal.ConventionTask;
-import org.gradle.api.plugins.Convention;
 
 import com.thalesgroup.gradle.pde.FeaturePdeConvention;
 import com.thalesgroup.gradle.pde.ProductPdeConvention;

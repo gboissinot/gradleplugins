@@ -38,7 +38,7 @@ public class ProductPdeConvention {
     List pluginsSrcDirList
     String featuresSrcDir
     String productName
-    String eclipseLocation
+    String eclipseLauncher
     String pdeBuildPluginVersion
     String equinoxLauncherPluginVersion
     String base
