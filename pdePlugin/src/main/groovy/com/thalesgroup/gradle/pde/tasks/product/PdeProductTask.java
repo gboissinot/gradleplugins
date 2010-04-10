@@ -27,13 +27,10 @@ package com.thalesgroup.gradle.pde.tasks.product;
 import com.thalesgroup.gradle.pde.ProductPdeConvention;
 import com.thalesgroup.gradle.pde.tasks.CommonTask;
 import org.gradle.api.tasks.TaskAction;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 public class PdeProductTask extends CommonTask {
 
-    private static Logger logger = LoggerFactory.getLogger(PdeProductTask.class);
 
     @TaskAction
     protected void generate() {

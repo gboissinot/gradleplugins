@@ -45,7 +45,8 @@ public class FeaturePdeConvention {
     String buildId
     String publishDirectory 
     String jobVersion   
-    String envConfigs	    	
+    String envConfigs="*, *, *"
+    Boolean usePreviousLinks
 
     FeaturePdeConvention(Project project, Map customValues) {
         this.project = project

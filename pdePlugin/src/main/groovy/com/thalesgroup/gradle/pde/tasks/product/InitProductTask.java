@@ -29,12 +29,8 @@ import com.thalesgroup.gradle.pde.ProductPdeConvention;
 import com.thalesgroup.gradle.pde.tasks.AntPdeInit;
 import com.thalesgroup.gradle.pde.tasks.CommonTask;
 import org.gradle.api.tasks.TaskAction;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class InitProductTask extends CommonTask {
-
-    private static Logger logger = LoggerFactory.getLogger(InitProductTask.class);
 
     @TaskAction
     protected void generate() {
@@ -48,6 +44,7 @@ public class InitProductTask extends CommonTask {
                 productPdeConvention.getPublishDirectory(),
                 productPdeConvention.getBaseLocation(),
                 productPdeConvention.getLinksSrcDirectory(),
+                productPdeConvention.getUsePreviousLinks(),
                 getAnt());
     }
 

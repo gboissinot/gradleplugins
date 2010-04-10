@@ -36,6 +36,7 @@ class AntFeatureResource {
                String baseLocation,
                String version,
                String envConfigs,
+               Boolean usePreviousLinks,
                AntBuilder ant) {
 
 
@@ -59,8 +60,9 @@ class AntFeatureResource {
     buildPropertiesIs.close();
 
     //Links directory
-    def tempLinkDir = new File(buildDirectory + "/dropins")
-    def destLinkDir = new File(baseLocation, "dropins");
+    def linkDirName=usePreviousLinks?"links":"dropins"
+    def tempLinkDir = new File(buildDirectory + "/" + linkDirName)
+    def destLinkDir = new File(baseLocation, linkDirName);
     tempLinkDir.listFiles().each {File file ->
       FileInputStream fIs = new FileInputStream(file)
       AntUtil.processResource(fIs, destLinkDir, file.getName(), [new ReplaceElt("\\#\\{version\\}", version)]);

@@ -38,6 +38,7 @@ class AntProductDeploy {
 
     def zipFileName = null
     if (!"*, *, *".equals(envConfigs)){
+      envConfigs=envConfigs.replace(", ","."); 
       zipFileName = buildDirectory + "/I.$buildId" + "/$buildId-"+ envConfigs + ".zip"
     }
     else {

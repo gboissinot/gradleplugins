@@ -42,11 +42,11 @@ public class CommonTask extends ConventionTask {
   }
 
   protected FeaturePdeConvention getFeaturePdeConvention() {
-	return (FeaturePdeConvention)getProject().getConvention().getPlugins().get("featurePde");
+	return (FeaturePdeConvention)(getProject().getConvention().getPlugins().get("FeaturePde"));
   }
 
   protected ProductPdeConvention getProductPdeConvention(){
-	return (ProductPdeConvention)getProject().getConvention().getPlugins().get("productPde");
+	return (ProductPdeConvention)(getProject().getConvention().getPlugins().get("ProductPde"));
   }
 
 }

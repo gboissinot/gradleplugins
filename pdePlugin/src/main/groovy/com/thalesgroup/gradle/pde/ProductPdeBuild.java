@@ -41,21 +41,22 @@ import com.thalesgroup.gradle.pde.tasks.product.ResourceProductTask;
 
 public class ProductPdeBuild implements Plugin<Project> {
 
-    public static final String CLEAN_TASK_NAME             = "pdeClean";
-    public static final String INIT_TASK_NAME              = "initPde";
-    public static final String PROCESS_RESOURCES_TASK_NAME = "processPdeResources";
-    public static final String PDE_BUILD_TASK_NAME         = "pdeBuild";
-    public static final String UPLOAD_TASK_NAME            = "uploadPde";
 
-    public void use(final Project project) {
+    public static final String CLEAN_TASK_NAME             = "pdeClean";
+    public static final String INIT_TASK_NAME              = "pdeInit";
+    public static final String PROCESS_RESOURCES_TASK_NAME = "pdeProcessResources";
+    public static final String PDE_BUILD_TASK_NAME         = "pdeBuild";
+    public static final String UPLOAD_TASK_NAME            = "pdeUpload";
+
+    public void apply(final Project project) {
 	   	HashMap<String, String> customValues = new HashMap<String,String>();
 	   	//project.setProperty("notification", config);
 		
 	   	ProductPdeConvention productPdeConvention = new ProductPdeConvention(project, customValues);
         Convention convention = project.getConvention();
-        convention.getPlugins().put("productPde", productPdeConvention);
+        convention.getPlugins().put("ProductPde", productPdeConvention);
 
-        project.setProperty("productPde", productPdeConvention);
+        project.setProperty("ProductPde", productPdeConvention);
         configureClean(project, customValues);
         configureInit(project,customValues);
         configureProcessResources(project,customValues);

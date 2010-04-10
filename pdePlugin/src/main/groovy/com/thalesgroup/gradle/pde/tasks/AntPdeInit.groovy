@@ -33,11 +33,15 @@ void execute(	String buildDirectory,
 		String publishDirectory, 
 		String baseLocation,
 	        String linksSrcDirectory,
+	        Boolean usePreviousLinks,
 		AntBuilder ant) {
 
 
+  def linkDirName=usePreviousLinks?"links":"dropins"
+
   //Create the destination dropins directory
-  def destLinkDir=baseLocation+"/dropins"
+  def destLinkDir=baseLocation+"/" + linkDirName
+  ant.delete(dir: destLinkDir , failonerror:'false')
   ant.mkdir(dir:destLinkDir)
 
   //Create the build directory
@@ -45,10 +49,10 @@ void execute(	String buildDirectory,
   ant.mkdir(dir:buildDirectory)
 
   //Create the temporary links directory
-  def tempLinkDir=buildDirectory+"/dropins"
+  def tempLinkDir=buildDirectory+"/" + linkDirName
   ant.mkdir(dir:tempLinkDir)
 
-  ant.echo(message:'Copy the dropins directory')
+  ant.echo(message:'Copy the "+ linkDirName +" directory')
   if(linksSrcDirectory){
 	  ant.copy(todir:tempLinkDir){
 		  fileset(dir:linksSrcDirectory){

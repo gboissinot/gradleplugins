@@ -38,13 +38,15 @@ class AntProductResource {
                String baseLocation,
                String version,
                String envConfigs,
+               Boolean usePreviousLinks,
                AntBuilder ant) {
 
     File fBuilderDir = new File(builderDir);
     fBuilderDir.mkdirs();
 
     buildDirectory = buildDirectory.replace('\\', '/')
-    baseLocation = baseLocation.replace('\\', '/')
+    baseLocation   = baseLocation.replace('\\', '/')
+    productName    = productName.replace('\\', '/')
 
     //build.properties
     java.io.InputStream buildPropertiesIs = this.getClass().getResourceAsStream("/product/build.properties");
@@ -58,8 +60,9 @@ class AntProductResource {
     buildPropertiesIs.close();
 
     //Links directory
-    def tempLinkDir = new File(buildDirectory + "/dropins")
-    def destLinkDir = new File(baseLocation, "dropins");
+    def linkDirName=usePreviousLinks?"links":"dropins"
+    def tempLinkDir = new File(buildDirectory + "/" + linkDirName)
+    def destLinkDir = new File(baseLocation, linkDirName);
     tempLinkDir.listFiles().each {File file ->
       FileInputStream fIs = new FileInputStream(file)
       AntUtil.processResource(fIs, destLinkDir, file.getName(), [new ReplaceElt("\\#\\{version\\}", version)]);

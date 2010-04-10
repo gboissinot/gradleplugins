@@ -41,19 +41,19 @@ import com.thalesgroup.gradle.pde.tasks.feature.ResourceFeatureTask;
 public class FeaturePdeBuild implements Plugin<Project>{
 
     public static final String CLEAN_TASK_NAME             = "pdeClean";
-    public static final String INIT_TASK_NAME              = "initPde";
-    public static final String PROCESS_RESOURCES_TASK_NAME = "processPdeResources";
+    public static final String INIT_TASK_NAME              = "pdeInit";
+    public static final String PROCESS_RESOURCES_TASK_NAME = "pdeProcessResources";
     public static final String PDE_BUILD_TASK_NAME         = "pdeBuild";
-    public static final String UPLOAD_TASK_NAME            = "uploadPde";
+    public static final String UPLOAD_TASK_NAME            = "pdeUpload";
 
 
-    public void use(final Project project) {
+    public void apply(final Project project) {
 	   	HashMap<String, ?> customValues = new HashMap<String,String>();
 	   	FeaturePdeConvention featurePdeConvention = new FeaturePdeConvention(project, customValues);
         Convention convention = project.getConvention();
-        convention.getPlugins().put("featurePde", featurePdeConvention);
+        convention.getPlugins().put("FeaturePde", featurePdeConvention);
 
-        project.setProperty("featurePde", featurePdeConvention);
+        project.setProperty("FeaturePde", featurePdeConvention);
         configureClean(project,customValues);
         configureInit(project,customValues);
         configureProcessResources(project,customValues);

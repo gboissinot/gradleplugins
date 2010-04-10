@@ -28,12 +28,8 @@ package com.thalesgroup.gradle.pde.tasks.feature;
 import com.thalesgroup.gradle.pde.FeaturePdeConvention;
 import com.thalesgroup.gradle.pde.tasks.CommonTask;
 import org.gradle.api.tasks.TaskAction;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class ResourceFeatureTask extends CommonTask {
-
-    private static Logger logger = LoggerFactory.getLogger(ResourceFeatureTask.class);
 
     @TaskAction
     protected void generate() {
@@ -49,6 +45,7 @@ public class ResourceFeatureTask extends CommonTask {
                 featurePdeConvention.getBaseLocation(),
                 featurePdeConvention.getJobVersion(),
                 featurePdeConvention.getEnvConfigs(),
+                featurePdeConvention.getUsePreviousLinks(),
                 getAnt());
     }
 

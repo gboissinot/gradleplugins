@@ -1,13 +1,35 @@
-apply id:'groovy'
+apply plugin:'groovy'
 
-version=2.0
+version='5.0'
 
 dependencies {
- groovy files(org.gradle.util.BootstrapUtil.gradleClasspath)
+ groovy fileTree(dir: new File(gradle.gradleHomeDir, 'lib'), includes: ['*.jar'])
 }
+
+repositories{
+ flatDir (dirs:'lib')
+}
+
+task info << {
+ println configurations.groovy.files
+}
+
 
 group="com.thalesgroup.gradle.plugins" 
 org.apache.ivy.util.url.CredentialsStore.INSTANCE.addCredentials(realm, host, user, password)
+
+
+task sourceZip (type:Zip){
+ from sourceSets.main.groovy
+ from 'build.gradle'
+ classifier='sources'
+}
+
+/*
+artifacts{
+ archives sourceZip
+}
+*/
 
 uploadArchives {
  uploadDescriptor = true
@@ -16,7 +38,5 @@ uploadArchives {
      url= repositoryURL
      addArtifactPattern "$url/[organisation]/[artifact]-[revision].[ext]"
      addIvyPattern "$url/[organisation]/[artifact]-ivy-[revision].xml"       
- }
-  
+ }  
 }
-

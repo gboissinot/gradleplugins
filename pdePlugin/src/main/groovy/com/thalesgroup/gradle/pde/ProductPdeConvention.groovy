@@ -25,8 +25,6 @@ package com.thalesgroup.gradle.pde;
 
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
-//import org.gradle.api.internal.plugins.PluginUtil
-
 
 public class ProductPdeConvention {
 
@@ -47,7 +45,8 @@ public class ProductPdeConvention {
     String buildId
     String publishDirectory  
     String jobVersion
-    String envConfigs
+    String envConfigs="*, *, *"
+    Boolean usePreviousLinks
 	    	
 
     ProductPdeConvention(Project project, Map customValues) {
