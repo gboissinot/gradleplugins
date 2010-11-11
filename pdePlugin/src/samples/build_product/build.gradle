@@ -1,0 +1,30 @@
+apply plugin: "ProductPde"
+
+buildscript { 
+    repositories { 
+		flatDir(dirs: "../../../build/libs")
+	} 
+    dependencies {
+        classpath ':pdePlugin:6.+' 
+    } 
+}
+
+configure(ProductPde){	
+
+ envConfigs = "win32, win32, x86"
+
+ buildDirectory = "$rootDir/work"
+ publishDirectory = "${buildDirectory}/publish"	
+ pluginsSrcDirList = ["plugins"]
+ builderDir = "$buildDirectory/build"
+
+ buildId = "ProductOnPluginsExample"
+ productName = "/ProductOnPluginsExample/simplemailproduct.product"	
+
+ //Specific
+ base = "D:/atelier/eclipse"	
+ eclipseLauncher = "D:/atelier/eclipse/eclipse"
+ equinoxLauncherPluginVersion = "1.0.201.R35x_v20090715"
+ pdeBuildPluginVersion = "3.5.1.R35x_20090820"
+
+}

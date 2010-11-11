@@ -1,0 +1,35 @@
+//Gradle 0.9-rc-2
+//Command Example: gradle pdeClean pdeBuild -i -S
+
+apply plugin: 'FeaturePde'
+
+buildscript { 
+    repositories { 
+		flatDir(dirs: "../../../build/libs")
+	} 
+    dependencies {
+        classpath ':pdePlugin:6.+' 
+    } 
+}
+
+configure(FeaturePde){	
+
+ //Must match the Feature directory name + feature ID in feature.xml
+ featureName = "FeatureExample"
+	
+ buildDirectory = "$rootDir/work"
+ publishDirectory = "${buildDirectory}/publish"	
+ pluginsSrcDirList = ["plugins"]
+ featuresSrcDir = "features"
+
+ buildId = "FeatureExample"
+
+ //Specific
+ base = "D:/atelier/eclipse"
+ eclipseLauncher = "D:/atelier/eclipse/eclipse"
+ equinoxLauncherPluginVersion = "1.0.201.R35x_v20090715"
+ pdeBuildPluginVersion = "3.5.1.R35x_20090820"
+
+ additionalPropertiesPath = "mybuild.properties"
+
+}
