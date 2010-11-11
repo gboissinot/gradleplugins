@@ -23,21 +23,27 @@
 
 package com.thalesgroup.gradle.pde.tasks.feature
 
+import com.thalesgroup.gradle.pde.FeaturePdeConvention
 import com.thalesgroup.gradle.pde.tasks.AntUtil
-import com.thalesgroup.gradle.pde.tasks.ReplaceElt;
+import com.thalesgroup.gradle.pde.tasks.ReplaceElt
 
 class AntFeatureResource {
 
-  void execute(String base,
-               String buildDirectory,
-               String builderDir,
-               String featureName,
-               String buildId,
-               String baseLocation,
-               String version,
-               String envConfigs,
-               Boolean usePreviousLinks,
+  void execute(FeaturePdeConvention featurePdeConvention,
                AntBuilder ant) {
+
+
+    String base = featurePdeConvention.getBase()
+    String buildDirectory = featurePdeConvention.getBuildDirectory()
+    String builderDir = featurePdeConvention.getBuilderDir()
+    String featureName = featurePdeConvention.getFeatureName()
+    String buildId = featurePdeConvention.getBuildId()
+    String baseLocation = featurePdeConvention.getBaseLocation()
+    String version = featurePdeConvention.getJobVersion()
+    String envConfigs = featurePdeConvention.getEnvConfigs()
+    Boolean usePreviousLinks = featurePdeConvention.getUsePreviousLinks()
+    String javacSource = featurePdeConvention.getJavacSource()
+    String javacTarget = featurePdeConvention.getJavacTarget()
 
 
     println("execute AntFeatureResource ")
@@ -56,11 +62,16 @@ class AntFeatureResource {
     java.io.InputStream buildPropertiesIs = this.getClass().getResourceAsStream("/feature/build.properties");
     AntUtil.processResource(buildPropertiesIs, fBuilderDir, "build.properties", [new ReplaceElt("gradleFeatureName", featureName),
             new ReplaceElt("gradleBase", base), new ReplaceElt("gradleBuildDirectory", buildDirectory),
-            new ReplaceElt("gradleConfigs", envConfigs), new ReplaceElt("gradleBuildId", buildId)]);
+            new ReplaceElt("gradleConfigs", envConfigs),
+            new ReplaceElt("gradleBuildId", buildId),
+            new ReplaceElt("gradleJavacSource", javacSource),
+            new ReplaceElt("gradleJavacTarget", javacTarget)
+
+    ]);
     buildPropertiesIs.close();
 
     //Links directory
-    def linkDirName=usePreviousLinks?"links":"dropins"
+    def linkDirName = usePreviousLinks ? "links" : "dropins"
     def tempLinkDir = new File(buildDirectory + "/" + linkDirName)
     def destLinkDir = new File(baseLocation, linkDirName);
     tempLinkDir.listFiles().each {File file ->

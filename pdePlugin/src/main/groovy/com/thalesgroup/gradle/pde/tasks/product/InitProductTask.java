@@ -34,9 +34,7 @@ public class InitProductTask extends CommonTask {
 
     @TaskAction
     protected void generate() {
-
         ProductPdeConvention productPdeConvention = getProductPdeConvention();
-
         new AntPdeInit().execute(productPdeConvention.getBuildDirectory(),
                 productPdeConvention.getBuilderDir(),
                 productPdeConvention.getPluginsSrcDirList(),

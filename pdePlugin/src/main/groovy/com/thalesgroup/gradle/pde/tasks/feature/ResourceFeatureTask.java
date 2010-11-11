@@ -25,7 +25,6 @@
 package com.thalesgroup.gradle.pde.tasks.feature;
 
 
-import com.thalesgroup.gradle.pde.FeaturePdeConvention;
 import com.thalesgroup.gradle.pde.tasks.CommonTask;
 import org.gradle.api.tasks.TaskAction;
 
@@ -33,20 +32,7 @@ public class ResourceFeatureTask extends CommonTask {
 
     @TaskAction
     protected void generate() {
-
-        FeaturePdeConvention featurePdeConvention = getFeaturePdeConvention();
-
-        new AntFeatureResource().execute(
-                featurePdeConvention.getBase(),
-                featurePdeConvention.getBuildDirectory(),
-                featurePdeConvention.getBuilderDir(),
-                featurePdeConvention.getFeatureName(),
-                featurePdeConvention.getBuildId(),
-                featurePdeConvention.getBaseLocation(),
-                featurePdeConvention.getJobVersion(),
-                featurePdeConvention.getEnvConfigs(),
-                featurePdeConvention.getUsePreviousLinks(),
-                getAnt());
+        new AntFeatureResource().execute(getFeaturePdeConvention(), getAnt());
     }
 
 }

@@ -24,28 +24,15 @@
 
 package com.thalesgroup.gradle.pde.tasks.feature;
 
-import com.thalesgroup.gradle.pde.FeaturePdeConvention;
 import com.thalesgroup.gradle.pde.tasks.CommonTask;
 import org.gradle.api.tasks.TaskAction;
 
 
 public class PdeFeatureTask extends CommonTask {
 
-
     @TaskAction
     protected void generate() {
-
-        FeaturePdeConvention featurePdeConvention = getFeaturePdeConvention();
-
-        new AntFeaturePde().execute(
-                featurePdeConvention.getEclipseLauncher(),
-                featurePdeConvention.getBaseLocation(),
-                featurePdeConvention.getEquinoxLauncherPluginVersion(),
-                featurePdeConvention.getBuildDirectory(),
-                featurePdeConvention.getBuilderDir(),
-                featurePdeConvention.getTimestamp(),
-                featurePdeConvention.getPdeBuildPluginVersion(),
-                getAnt());
+        new AntFeaturePde().execute(getFeaturePdeConvention(), getCustomValues(), getAnt());
     }
 
 }

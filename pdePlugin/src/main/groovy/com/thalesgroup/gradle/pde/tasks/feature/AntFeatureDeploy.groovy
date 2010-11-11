@@ -22,22 +22,25 @@
  ****************************************************************************** */
 
 
-package com.thalesgroup.gradle.pde.tasks.feature;
+package com.thalesgroup.gradle.pde.tasks.feature
 
+import com.thalesgroup.gradle.pde.FeaturePdeConvention
 
 class AntFeatureDeploy {
 
-  void execute(String featureName,
-               String buildId,
-               String buildDirectory,
-               String publishDirectory,
+  void execute(FeaturePdeConvention featurePdeConvention,
                AntBuilder ant) {
+
+    String featureName = featurePdeConvention.getFeatureName()
+    String buildId = featurePdeConvention.getBuildId()
+    String buildDirectory = featurePdeConvention.getBuildDirectory()
+    String publishDirectory = featurePdeConvention.getPublishDirectory()
 
     //delete the publish directory
     ant.delete(dir: publishDirectory)
 
     def zipFileName = buildDirectory + "/I.$buildId" + "/$featureName-$buildId" + ".zip"
-    println zipFileName
+    println "Deleting ${zipFileName} file..."
     ant.unzip(dest: publishDirectory, src: zipFileName)
 
   }

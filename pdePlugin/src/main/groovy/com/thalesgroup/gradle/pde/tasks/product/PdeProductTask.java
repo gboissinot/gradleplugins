@@ -23,29 +23,14 @@
 
 package com.thalesgroup.gradle.pde.tasks.product;
 
-
-import com.thalesgroup.gradle.pde.ProductPdeConvention;
 import com.thalesgroup.gradle.pde.tasks.CommonTask;
 import org.gradle.api.tasks.TaskAction;
 
-
 public class PdeProductTask extends CommonTask {
-
 
     @TaskAction
     protected void generate() {
-
-        ProductPdeConvention productPdeConvention = getProductPdeConvention();
-
-        new AntProductPde().execute(
-                productPdeConvention.getEclipseLauncher(),
-                productPdeConvention.getBaseLocation(),
-                productPdeConvention.getEquinoxLauncherPluginVersion(),
-                productPdeConvention.getBuildDirectory(),
-                productPdeConvention.getBuilderDir(),
-                productPdeConvention.getTimestamp(),
-                productPdeConvention.getPdeBuildPluginVersion(),
-                getAnt());
+        new AntProductPde().execute(getProductPdeConvention(), getCustomValues(), getAnt());
     }
 
 }

@@ -24,27 +24,14 @@
 
 package com.thalesgroup.gradle.pde.tasks.product;
 
-import com.thalesgroup.gradle.pde.ProductPdeConvention;
 import com.thalesgroup.gradle.pde.tasks.CommonTask;
 import org.gradle.api.tasks.TaskAction;
 
 public class ResourceProductTask extends CommonTask {
 
-
     @TaskAction
     protected void generate() {
-        ProductPdeConvention productPdeConvention = getProductPdeConvention();
-        new AntProductResource().execute(
-                productPdeConvention.getBase(),
-                productPdeConvention.getBuildDirectory(),
-                productPdeConvention.getBuilderDir(),
-                productPdeConvention.getProductName(),
-                productPdeConvention.getBuildId(),
-                productPdeConvention.getBaseLocation(),
-                productPdeConvention.getJobVersion(),
-                productPdeConvention.getEnvConfigs(),
-                productPdeConvention.getUsePreviousLinks(),
-                getAnt());
+        new AntProductResource().execute(getProductPdeConvention(), getAnt());
     }
 
 }

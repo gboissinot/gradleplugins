@@ -21,25 +21,27 @@
  * THE SOFTWARE.                                                                *
  ****************************************************************************** */
 
-package com.thalesgroup.gradle.pde.tasks.product;
+package com.thalesgroup.gradle.pde.tasks.product
 
+import com.thalesgroup.gradle.pde.ProductPdeConvention
 
 class AntProductDeploy {
 
-  void execute(
-  String buildId,
-  String buildDirectory,
-  String publishDirectory,
-  String envConfigs,
-  AntBuilder ant) {
+  void execute(ProductPdeConvention productPdeConvention,
+               AntBuilder ant) {
+
+    String buildId = productPdeConvention.getBuildId()
+    String buildDirectory = productPdeConvention.getBuildDirectory()
+    String publishDirectory = productPdeConvention.getPublishDirectory()
+    String envConfigs = productPdeConvention.getEnvConfigs()
 
     //delete the publish directory
     ant.delete(dir: publishDirectory)
 
     def zipFileName = null
-    if (!"*, *, *".equals(envConfigs)){
-      envConfigs=envConfigs.replace(", ","."); 
-      zipFileName = buildDirectory + "/I.$buildId" + "/$buildId-"+ envConfigs + ".zip"
+    if (!"*, *, *".equals(envConfigs)) {
+      envConfigs = envConfigs.replace(", ", ".");
+      zipFileName = buildDirectory + "/I.$buildId" + "/$buildId-" + envConfigs + ".zip"
     }
     else {
       zipFileName = buildDirectory + "/I.$buildId" + "/$buildId" + ".zip"

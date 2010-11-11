@@ -1,42 +1,85 @@
-apply plugin:'groovy'
+/**
+ Chanelog
 
-version='5.0'
+ 5.0: Initial changelog
+ 6.0: Added a buildpath parameter
+ 6.1: Built with gradle-0.9-rc-1
+ 6.2: Added jvmOptions to the ant.java options
+ 6.3->6.4: Fixed internal errors
+ 6.7: Added javacSource and javacTarget as parameters + eclipse directory
+ 6.7.1: Fixed bug on dataDirectory
+ 6.7.2: use CMSClassUnloadingEnabled in place of CMSPermGenSweepingEnabled
+ 6.8: use extLocations
+ */
+
+apply plugin: 'groovy'
+apply plugin: 'maven'
+
+version = '6.8-' + System.currentTimeMillis()
+
+
+installer = install.repositories.mavenInstaller
+
+installer.pom*.whenConfigured {pom ->
+  pom.project {
+    developers {
+      developer {
+        id('gboissinot')
+        name('Gregory Boissinot')
+        email('gregory.boissinot@zenika.com')
+        roles {
+          role('Project creator')
+          role('Project developer')
+        }
+      }
+      developer {
+        id('breskeby')
+        name('Rene Groeschke')
+        roles {
+          role('Project contributor')
+        }
+      }
+      developer {
+        id('diabeteman')
+        roles {
+          role('Project contributor')
+          role('Project developer')
+        }
+      }
+
+    }
+  }
+}
 
 dependencies {
- groovy fileTree(dir: new File(gradle.gradleHomeDir, 'lib'), includes: ['*.jar'])
+  groovy fileTree(dir: new File(gradle.gradleHomeDir, 'lib'), includes: ['*.jar'])
 }
 
-repositories{
- flatDir (dirs:'lib')
-}
-
-task info << {
- println configurations.groovy.files
-}
-
-
-group="com.thalesgroup.gradle.plugins" 
+group = "com.thalesgroup.gradle.plugins"
 org.apache.ivy.util.url.CredentialsStore.INSTANCE.addCredentials(realm, host, user, password)
 
 
-task sourceZip (type:Zip){
- from sourceSets.main.groovy
- from 'build.gradle'
- classifier='sources'
+task sourceZip(type: Zip) {
+  from sourceSets.main.allSource
+  from 'build.gradle'
+  classifier = 'sources'
 }
 
-/*
-artifacts{
- archives sourceZip
+
+artifacts {
+  archives sourceZip
 }
-*/
+
 
 uploadArchives {
- uploadDescriptor = true
- repositories.add(new org.apache.ivy.plugins.resolver.URLResolver()) {
-     name="Artifactory"
-     url= repositoryURL
-     addArtifactPattern "$url/[organisation]/[artifact]-[revision].[ext]"
-     addIvyPattern "$url/[organisation]/[artifact]-ivy-[revision].xml"       
- }  
+  uploadDescriptor = true
+  repositories.add(new org.apache.ivy.plugins.resolver.URLResolver()) {
+    name = "Artifactory"
+    url = repositoryURL
+    addArtifactPattern "$url/[organisation]/[artifact]-[revision].[ext]"
+    addIvyPattern "$url/[organisation]/[artifact]-ivy-[revision].xml"
+  }
 }
+
+
+

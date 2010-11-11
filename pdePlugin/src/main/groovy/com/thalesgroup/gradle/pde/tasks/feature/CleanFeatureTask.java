@@ -30,7 +30,6 @@ import org.gradle.api.tasks.TaskAction;
 
 public class CleanFeatureTask extends CommonTask {
 
-
     @TaskAction
     protected void generate() {
         FeaturePdeConvention featurePdeConvention = getFeaturePdeConvention();

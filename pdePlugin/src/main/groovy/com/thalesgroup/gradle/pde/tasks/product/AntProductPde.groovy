@@ -21,43 +21,79 @@
  * THE SOFTWARE.                                                                *
  ****************************************************************************** */
 
-package com.thalesgroup.gradle.pde.tasks.product;
+package com.thalesgroup.gradle.pde.tasks.product
+
+import com.thalesgroup.gradle.pde.ProductPdeConvention
+import org.gradle.api.GradleException
 
 class AntProductPde {
 
-  void execute(String eclipseLauncher, String baseLocation, String equinoxLauncherPluginVersion,
-               String buildDirectory, String builderDir,
-               String timestamp, String pdeBuildPluginVersion, AntBuilder ant) {
+  void execute(ProductPdeConvention productPdeConvention,
+               Map<String, Object> customValues,
+               AntBuilder ant) {
+
+
+    String eclipseLauncher = productPdeConvention.getEclipseLauncher()
+    String equinoxLauncherPluginVersion = productPdeConvention.getEquinoxLauncherPluginVersion()
+    String buildDirectory = productPdeConvention.getBuildDirectory()
+    String builderDir = productPdeConvention.getBuilderDir()
+    String timestamp = productPdeConvention.getTimestamp()
+    String pdeBuildPluginVersion = productPdeConvention.getPdeBuildPluginVersion()
+    List extLocations = productPdeConvention.getExtLocations()
+    String jvmOptions = productPdeConvention.getJvmOptions()
+    String data = productPdeConvention.getData()
+    String eclipseExtensionsRoot = productPdeConvention.getEclipseExtensionsRoot()
 
     buildDirectory = buildDirectory.replace('\\', '/')
     builderDir = builderDir.replace('\\', '/')
+    def dataDirectory = buildDirectory + "/" + data
+    ant.mkdir(dir: dataDirectory)
 
-    StringBuffer commandLine = new StringBuffer();
-    commandLine.append("java -jar ${eclipseLauncher}/plugins/org.eclipse.equinox.launcher_${equinoxLauncherPluginVersion}.jar")
-    commandLine.append(" -application")
-    commandLine.append(" org.eclipse.ant.core.antRunner")
-    commandLine.append(" -buildfile")
-    commandLine.append(" ${eclipseLauncher}/plugins/org.eclipse.pde.build_${pdeBuildPluginVersion}/scripts/productBuild/productBuild.xml")
-    commandLine.append(" -Dbuilder=${builderDir}")
-    commandLine.append(" -DbaseLocation=${baseLocation}")
-    commandLine.append(" -Dtimestamp=${timestamp}")
+    List args = new ArrayList()
+    args << "${jvmOptions}"
+    args << "-jar ${eclipseLauncher}/plugins/org.eclipse.equinox.launcher_${equinoxLauncherPluginVersion}.jar"
+    args << "-application org.eclipse.ant.core.antRunner"
+    args << "-buildfile ${eclipseLauncher}/plugins/org.eclipse.pde.build_${pdeBuildPluginVersion}/scripts/productBuild/productBuild.xml"
+    args << "-Dbuilder=${builderDir}"
+    args << "-Dtimestamp=${timestamp}"
+    args << "-data ${dataDirectory}"
 
-    ant.echo(message: "[PDE Command line] - " + commandLine)
-    ant.echo(message: "Building...")
-    ant.java(
-            classname: "org.eclipse.equinox.launcher.Main",
-            fork: "true",
-            failonerror: "true") {
-      arg(value: "-application")
-      arg(value: "org.eclipse.ant.core.antRunner")
-      arg(value: "-buildfile")
-      arg(value: "${eclipseLauncher}/plugins/org.eclipse.pde.build_${pdeBuildPluginVersion}/scripts/productBuild/productBuild.xml")
-      arg(value: "-Dbuilder=${builderDir}")
-      arg(value: "-DbaseLocation=${baseLocation}")
-      arg(value: "-Dtimestamp=${timestamp}")
-      classpath {
-        pathelement(location: "${eclipseLauncher}/plugins/org.eclipse.equinox.launcher_${equinoxLauncherPluginVersion}.jar")
+    //----------  Build the pluginPath
+    List pluginPathArgs = new ArrayList();
+    if (extLocations) {
+      extLocations.each {String pluginPath ->
+        if (!(new File(pluginPath).exists())) {
+          pluginPath = eclipseExtensionsRoot + "/" + pluginPath
+          if (!(new File(pluginPath).exists())) {
+            throw new GradleException(pluginPath + " do not exist.")
+          }
+        }
+        pluginPathArgs << pluginPath + "/eclipse"
+      }
+      String pluginPath = pluginPathArgs.join(File.pathSeparator)
+      args << "-DpluginPath=${pluginPath}"
+    }
+
+    //Built from the given property file
+    //The properties are added at the end of the command line
+    //The command line properties override the default properties from the file
+    if (!customValues.values().isEmpty()) {
+      println "---------- Additional parameters"
+      for (Map.Entry<String, String> entry: customValues.entrySet()){
+        args << "-D" + entry.getKey() + "=" + entry.getValue()
       }
     }
+
+    args << "-data \"${dataDirectory}\""
+
+
+    String eclipseCommand = args.join(" ")
+
+    ant.echo(message: "[PDE Command line] - java " + eclipseCommand)
+    ant.echo(message: "Building in ${buildDirectory} ...")
+    ant.exec(executable: "java", dir: buildDirectory, failonerror: true) {
+      arg(line: eclipseCommand)
+    }
+
   }
 }
