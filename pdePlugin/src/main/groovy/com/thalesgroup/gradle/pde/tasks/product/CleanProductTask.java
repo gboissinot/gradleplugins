@@ -34,8 +34,9 @@ public class CleanProductTask extends CommonTask {
 
     @TaskAction
     protected void generate() {
-        ProductPdeConvention productPdeConvention = getProductPdeConvention();
-        new AntPdeClean().execute(productPdeConvention.getBuildDirectory(), getAnt());
+        ProductPdeConvention convention = getProductPdeConvention();
+        new AntPdeClean().execute(convention.getBuildDirectory(), convention.getBaseLocation(),
+                convention.getData(), getAnt());
     }
 
 }

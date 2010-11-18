@@ -21,68 +21,91 @@
  * THE SOFTWARE.                                                                *
  ****************************************************************************** */
 
+ /*
 package com.thalesgroup.gradle.pde.tasks.feature
+
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
 
 import com.thalesgroup.gradle.pde.FeaturePdeConvention
 import com.thalesgroup.gradle.pde.tasks.AntUtil
+import com.thalesgroup.gradle.pde.tasks.GenerateAllElementsAction;
 import com.thalesgroup.gradle.pde.tasks.ReplaceElt
+import com.thalesgroup.gradle.pde.tasks.CleanTargetPlatformAction;
+
+import static com.thalesgroup.gradle.pde.tasks.Util.normPathForAnt;
 
 class AntFeatureResource {
-
-  void execute(FeaturePdeConvention featurePdeConvention,
-               AntBuilder ant) {
-
-
-    String base = featurePdeConvention.getBase()
-    String buildDirectory = featurePdeConvention.getBuildDirectory()
-    String builderDir = featurePdeConvention.getBuilderDir()
-    String featureName = featurePdeConvention.getFeatureName()
-    String buildId = featurePdeConvention.getBuildId()
-    String baseLocation = featurePdeConvention.getBaseLocation()
-    String version = featurePdeConvention.getJobVersion()
-    String envConfigs = featurePdeConvention.getEnvConfigs()
-    Boolean usePreviousLinks = featurePdeConvention.getUsePreviousLinks()
-    String javacSource = featurePdeConvention.getJavacSource()
-    String javacTarget = featurePdeConvention.getJavacTarget()
-
-
-    println("execute AntFeatureResource ")
-    File fBuilderDir = new File(builderDir);
-    fBuilderDir.mkdirs();
-
-    buildDirectory = buildDirectory.replace('\\', '/')
-    baseLocation = baseLocation.replace('\\', '/')
-
-    //allElements.xml
-    java.io.InputStream allElementsIs = this.getClass().getResourceAsStream("/feature/allElements.xml");
-    AntUtil.processResource(allElementsIs, fBuilderDir, "allElements.xml", [new ReplaceElt("gradleFeatureName", featureName)]);
-    allElementsIs.close();
-
-    //build.properties
-    java.io.InputStream buildPropertiesIs = this.getClass().getResourceAsStream("/feature/build.properties");
-    AntUtil.processResource(buildPropertiesIs, fBuilderDir, "build.properties", [new ReplaceElt("gradleFeatureName", featureName),
-            new ReplaceElt("gradleBase", base), new ReplaceElt("gradleBuildDirectory", buildDirectory),
+    
+    void execute(FeaturePdeConvention conv, AntBuilder ant) {
+        String base = conv.getBase()
+        String buildDirectory = conv.getBuildDirectory()
+        String builderDir = conv.getBuilderDir()
+        String featureName = conv.getFeatureName()
+        String buildId = conv.getBuildId()
+        String version = conv.getJobVersion()
+        String envConfigs = conv.getEnvConfigs()
+        Boolean usePreviousLinks = conv.getUsePreviousLinks()
+        String javacSource = conv.getJavacSource()
+        String javacTarget = conv.getJavacTarget()
+        String data = conv.getData()
+        
+        File fBuilderDir = new File(builderDir);
+        fBuilderDir.mkdirs();
+        
+        
+        List features = new ArrayList<String>();
+        features.add(featureName);
+        
+        
+        new GenerateAllElementsAction().generate(features, builderDir)
+        
+        //build.properties
+        java.io.InputStream buildPropertiesIs = this.getClass().getResourceAsStream("/feature/build.properties");
+        AntUtil.processResource(buildPropertiesIs, fBuilderDir, "build.properties", [
+            new ReplaceElt("gradleFeatureName", featureName),
+            new ReplaceElt("gradleBase", normPathForAnt(base)),
+            new ReplaceElt("gradleBuildDirectory", normPathForAnt(buildDirectory)),
             new ReplaceElt("gradleConfigs", envConfigs),
             new ReplaceElt("gradleBuildId", buildId),
             new ReplaceElt("gradleJavacSource", javacSource),
             new ReplaceElt("gradleJavacTarget", javacTarget)
+        ]);
+        buildPropertiesIs.close();
+        
+        //Links directory
+        if (usePreviousLinks) {
+            def tempLinkDir = new File(buildDirectory, "links")
+            def destLinkDir = new File(baseLocation, "links");
 
-    ]);
-    buildPropertiesIs.close();
-
-    //Links directory
-    def linkDirName = usePreviousLinks ? "links" : "dropins"
-    def tempLinkDir = new File(buildDirectory + "/" + linkDirName)
-    def destLinkDir = new File(baseLocation, linkDirName);
-    tempLinkDir.listFiles().each {File file ->
-      FileInputStream fIs = new FileInputStream(file)
-      AntUtil.processResource(fIs, destLinkDir, file.getName(), [new ReplaceElt("\\#\\{version\\}", version)]);
-      fIs.close();
+            def rcpcleaner = "R:/extloc/platform-3.3/rcpcleaner"
+            ant.echo(message: "path=${rcpcleaner}", file: "${destLinkDir}/org.thalesgroup.rcpcleaner.link");
+            
+            try {
+                new CleanTargetPlatformAction(ant, baseLocation, buildDirectory, data).clean()
+            } catch (FileNotFoundException e) {
+                println "WARNING! Target Platform could not be cleaned. " + e.toString()
+            }
+            
+            
+            tempLinkDir.listFiles().each {File file ->
+                FileInputStream fIs = new FileInputStream(file)
+                AntUtil.processResource(fIs, destLinkDir, file.getName(), [
+                    new ReplaceElt("\\#\\{version\\}", version)
+                ]);
+                fIs.close();
+            }
+            try {
+                new CleanTargetPlatformAction(ant, baseLocation, buildDirectory, data).clean()
+            } catch (FileNotFoundException e) {
+                println "WARNING! Target Platform could not be initialized. " + e.toString()
+            }
+        }
+        
+        //customTargets.xml
+        java.io.InputStream customTargetsIs = this.getClass().getResourceAsStream("/feature/customTargets.xml");
+        AntUtil.copyFile(customTargetsIs, fBuilderDir, "customTargets.xml")
+        customTargetsIs.close();
     }
-
-    //customTargets.xml
-    java.io.InputStream customTargetsIs = this.getClass().getResourceAsStream("/feature/customTargets.xml");
-    AntUtil.copyFile(customTargetsIs, fBuilderDir, "customTargets.xml")
-    customTargetsIs.close();
-  }
 }
+*/

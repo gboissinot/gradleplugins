@@ -25,8 +25,9 @@
 package com.thalesgroup.gradle.pde.tasks.feature;
 
 
-import com.thalesgroup.gradle.pde.tasks.CommonTask;
 import org.gradle.api.tasks.TaskAction;
+
+import com.thalesgroup.gradle.pde.tasks.CommonTask;
 
 public class DeployFeatureTask extends CommonTask {
 

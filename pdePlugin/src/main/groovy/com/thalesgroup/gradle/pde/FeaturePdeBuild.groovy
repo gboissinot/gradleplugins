@@ -83,7 +83,7 @@ public class FeaturePdeBuild implements Plugin<Project> {
         task.setCustomValues(customValues);
       }
     });
-    project.getTasks().add(CLEAN_TASK_NAME, CleanFeatureTask.class).setDescription("Cleanning...");
+    project.getTasks().add(CLEAN_TASK_NAME, CleanFeatureTask.class).setDescription("Cleaning...");
   }
 
 

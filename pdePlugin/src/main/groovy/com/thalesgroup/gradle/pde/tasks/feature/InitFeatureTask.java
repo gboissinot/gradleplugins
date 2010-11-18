@@ -34,17 +34,19 @@ public class InitFeatureTask extends CommonTask {
 
     @TaskAction
     protected void generate() {
-        FeaturePdeConvention featurePdeConvention = getFeaturePdeConvention();
-        featurePdeConvention.print();
+        FeaturePdeConvention convention = getFeaturePdeConvention();
+        convention.print();
         new AntPdeInit().execute(
-                featurePdeConvention.getBuildDirectory(),
-                featurePdeConvention.getBuilderDir(),
-                featurePdeConvention.getPluginsSrcDirList(),
-                featurePdeConvention.getFeaturesSrcDir(),
-                featurePdeConvention.getPublishDirectory(),
-                featurePdeConvention.getBaseLocation(),
-                featurePdeConvention.getLinksSrcDirectory(),
-                featurePdeConvention.getUsePreviousLinks(),
+                convention.getBuildDirectory(),
+                convention.getBuilderDir(),
+                convention.getPluginsSrcDirList(),
+                convention.getFeaturesSrcDir(),
+                convention.getPublishDirectory(),
+                convention.getBaseLocation(),
+                convention.getLinksSrcDirectory(),
+                convention.getExtLocations(),
+                convention.getUsePreviousLinks(),
+                convention.getData(),
                 getAnt());
     }
 

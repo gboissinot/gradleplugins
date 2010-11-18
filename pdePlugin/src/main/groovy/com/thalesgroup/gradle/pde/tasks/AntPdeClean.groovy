@@ -23,13 +23,40 @@
 
 package com.thalesgroup.gradle.pde.tasks
 
+import java.io.File;
+import java.io.FileNotFoundException;
+
+import com.thalesgroup.gradle.pde.PdeConvention;
+
 class AntPdeClean {
-
-  void execute(String buildDirectory,
-               AntBuilder ant) {
-
-    //delete the working directory
-    ant.delete(dir: buildDirectory)
-  }
-
+    
+    void execute(PdeConvention conv, AntBuilder ant) {
+        println "Deleting the build directory..."
+        //delete the working directory
+        ant.delete(dir: conv.getBuildDirectory());
+        
+        println "Creating the build directory..."
+        ant.mkdir(dir: conv.getBuildDirectory())
+        
+        println "Creating the pde eclipse workspace..."
+        ant.mkdir(dir: conv.getData())
+        
+        if (conv.getUsePreviousLinks()) {
+            def destLinkDir = new File(conv.getBaseLocation(), "links");
+            
+            println "Deleting old link files..."
+            ant.delete(dir: destLinkDir);
+            ant.mkdir(dir: destLinkDir);
+            
+            def rcpcleaner = "R:/extloc/platform-3.3/rcpcleaner";
+            ant.echo(message: "path=${rcpcleaner}", file: "${destLinkDir}/org.thalesgroup.rcpcleaner.link");
+            
+            try {
+                new CleanTargetPlatformAction(ant, conv.getBaseLocation(), conv.getBuildDirectory(), 
+                        conv.getData()).clean();
+            } catch (FileNotFoundException e) {
+                println "WARNING! Target Platform could not be cleaned. " + e.toString();
+            }
+        }
+    }
 }

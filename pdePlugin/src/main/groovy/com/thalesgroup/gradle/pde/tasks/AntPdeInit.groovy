@@ -23,72 +23,75 @@
 
 package com.thalesgroup.gradle.pde.tasks
 
+import static com.thalesgroup.gradle.pde.tasks.Util.convertPathForOs;
+import static com.thalesgroup.gradle.pde.tasks.Util.normPathForAnt;
+
 class AntPdeInit {
+    
+    void execute(String buildDirectory,
+                 String builderDir,
+                 List pluginsSrcDirList,
+                 String featuresSrcDir,
+                 String publishDirectory,
+                 String baseLocation,
+                 String linksSrcDirectory,
+                 List extensionLocations,
+                 Boolean usePreviousLinks,
+                 String data,
+                 AntBuilder ant) 
+    {
 
-  void execute(String buildDirectory,
-               String builderDir,
-               List pluginsSrcDirList,
-               String featuresSrcDir,
-               String publishDirectory,
-               String baseLocation,
-               String linksSrcDirectory,
-               Boolean usePreviousLinks,
-               AntBuilder ant) {
-
-
-    //Create the build directory
-    ant.echo(message: 'Create the build directory')
-    ant.mkdir(dir: buildDirectory)
-
-    if (linksSrcDirectory) {
-
-      def linkDirName = usePreviousLinks ? "links" : "dropins"
-
-      //Create the destination dropins directory
-      def destLinkDir = baseLocation + "/" + linkDirName
-      ant.delete(dir: destLinkDir, failonerror: 'false')
-      ant.mkdir(dir: destLinkDir)
-
-      ant.echo(message: 'Copy the "+ linkDirName +" directory')
-
-      //Create the temporary links directory
-      def tempLinkDir = buildDirectory + "/" + linkDirName
-      ant.mkdir(dir: tempLinkDir)
-
-      // Copy the temp links
-      ant.copy(todir: tempLinkDir) {
-        fileset(dir: linksSrcDirectory) {
-          include(name: '*.link')
+        if (usePreviousLinks) {
+            //Create the destination dropins directory
+            def destLinkDir = baseLocation + "/links"
+            ant.delete(dir: destLinkDir, failonerror: false)
+            ant.mkdir(dir: destLinkDir)
+            
+            //Create the temporary links directory
+            def tempLinkDir = buildDirectory + "/links"
+            ant.mkdir(dir: tempLinkDir)
+            
+            if (linksSrcDirectory) {
+                println "Fetching link files from ${linksSrcDirectory}..."
+                // Copy the temp links
+                ant.copy(todir: tempLinkDir) {
+                    fileset(dir: linksSrcDirectory) { include(name: '*.link') }
+                }
+            } else if (extensionLocations) {
+                println "Generating link files..."
+                for (String extLoc : extensionLocations) {
+                    def linkFileName = extLoc.replaceAll("[\\\\/:]", "_")
+                    linkFileName = tempLinkDir + "/${linkFileName}.link"
+                    ant.echo(message: "path=${extLoc}", file: linkFileName)
+                    println " -> generated " + linkFileName
+                }
+            }
         }
-      }
-    }
-
-    // Create the features directory and fill in
-    def featuresDir = buildDirectory + "/features"
-    ant.echo(message: 'Create the features directory')
-    ant.mkdir(dir: featuresDir)
-    if (featuresSrcDir) {
-      ant.copy(todir: featuresDir) {
-        fileset(dir: featuresSrcDir)
-      }
-    }
-
-    // Create the plugins directory and fill in
-    def pluginsDir = buildDirectory + "/plugins"
-    ant.echo(message: 'Create the plugins directory')
-    ant.mkdir(dir: pluginsDir)
-    if (!pluginsSrcDirList.isEmpty()) {
-      ant.copy(todir: pluginsDir) {
-        pluginsSrcDirList.each {
-          fileset(dir: it)
+        // Create the features directory and fill in
+        def featuresDir = buildDirectory + "/features"
+        println "Fetching features..."
+        ant.mkdir(dir: featuresDir)
+        if (featuresSrcDir) {
+            ant.copy(todir: featuresDir) { fileset(dir: featuresSrcDir) }
         }
-      }
+        
+        // Create the plugins directory and fill in
+        def pluginsDir = buildDirectory + "/plugins"
+        println "Fetching plugins..."
+        ant.mkdir(dir: pluginsDir)
+        if (!pluginsSrcDirList.isEmpty()) {
+            ant.copy(todir: pluginsDir) {
+                pluginsSrcDirList.each { fileset(dir: it) }
+            }
+        }
+        
+        //Create the publish directory
+        if (publishDirectory) {
+            println "Creating the publication directory..."
+            ant.mkdir(dir: publishDirectory)
+        }
     }
 
-    //Create the publish directory
-    if (publishDirectory) {
-      ant.echo(message: 'Create the publication directory')
-      ant.mkdir(dir: publishDirectory)
-    }
-  }
+    
+    
 }

@@ -14,8 +14,12 @@
 
 apply plugin: 'groovy'
 apply plugin: 'maven'
+apply plugin: 'eclipse'
 
-version = '6.8-' + System.currentTimeMillis()
+
+
+version = '6.8-' + new java.text.SimpleDateFormat("yyyyMMddHHmmss").format(new Date())
+
 
 
 installer = install.repositories.mavenInstaller
@@ -51,6 +55,7 @@ installer.pom*.whenConfigured {pom ->
   }
 }
 
+
 dependencies {
   groovy fileTree(dir: new File(gradle.gradleHomeDir, 'lib'), includes: ['*.jar'])
 }
@@ -65,11 +70,9 @@ task sourceZip(type: Zip) {
   classifier = 'sources'
 }
 
-
 artifacts {
   archives sourceZip
 }
-
 
 uploadArchives {
   uploadDescriptor = true
