@@ -25,14 +25,17 @@
 package com.thalesgroup.gradle.pde.tasks.feature;
 
 
+import java.io.IOException;
+
+import com.thalesgroup.gradle.pde.tasks.AntPdeResources;
 import com.thalesgroup.gradle.pde.tasks.CommonTask;
 import org.gradle.api.tasks.TaskAction;
 
 public class ResourceFeatureTask extends CommonTask {
 
     @TaskAction
-    protected void generate() {
-        new AntFeatureResource().execute(getFeaturePdeConvention(), getAnt());
+    protected void generate() throws IOException {
+        new AntPdeResources().execute(getFeaturePdeConvention(), getAnt());
     }
 
 }

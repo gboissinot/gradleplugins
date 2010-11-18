@@ -36,17 +36,7 @@ public class InitProductTask extends CommonTask {
     protected void generate() {
         ProductPdeConvention convention = getProductPdeConvention();
         convention.print();
-        new AntPdeInit().execute(convention.getBuildDirectory(),
-                convention.getBuilderDir(),
-                convention.getPluginsSrcDirList(),
-                convention.getFeaturesSrcDir(),
-                convention.getPublishDirectory(),
-                convention.getBaseLocation(),
-                convention.getLinksSrcDirectory(),
-                convention.getExtLocations(),
-                convention.getUsePreviousLinks(),
-                convention.getData(),
-                getAnt());
+        new AntPdeInit().execute(convention, getAnt());
     }
 
 }

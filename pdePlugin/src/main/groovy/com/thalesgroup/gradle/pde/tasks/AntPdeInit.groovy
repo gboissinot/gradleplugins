@@ -23,72 +23,58 @@
 
 package com.thalesgroup.gradle.pde.tasks
 
-import static com.thalesgroup.gradle.pde.tasks.Util.convertPathForOs;
-import static com.thalesgroup.gradle.pde.tasks.Util.normPathForAnt;
+import java.io.File;
+
+import com.thalesgroup.gradle.pde.PdeConvention;
 
 class AntPdeInit {
     
-    void execute(String buildDirectory,
-                 String builderDir,
-                 List pluginsSrcDirList,
-                 String featuresSrcDir,
-                 String publishDirectory,
-                 String baseLocation,
-                 String linksSrcDirectory,
-                 List extensionLocations,
-                 Boolean usePreviousLinks,
-                 String data,
-                 AntBuilder ant) 
+    void execute(PdeConvention conv, AntBuilder ant) 
     {
-
-        if (usePreviousLinks) {
-            //Create the destination dropins directory
-            def destLinkDir = baseLocation + "/links"
+        if (conv.getUsePreviousLinks()) {
+            //Create the destination links directory
+            def destLinkDir = conv.getBaseLocation() + "/links"
             ant.delete(dir: destLinkDir, failonerror: false)
             ant.mkdir(dir: destLinkDir)
             
-            //Create the temporary links directory
-            def tempLinkDir = buildDirectory + "/links"
-            ant.mkdir(dir: tempLinkDir)
-            
-            if (linksSrcDirectory) {
-                println "Fetching link files from ${linksSrcDirectory}..."
+            if (conv.getLinksSrcDirectory()) {
+                println "Fetching link files from ${conv.getLinksSrcDirectory()}..."
                 // Copy the temp links
-                ant.copy(todir: tempLinkDir) {
-                    fileset(dir: linksSrcDirectory) { include(name: '*.link') }
+                ant.copy(todir: destLinkDir) {
+                    fileset(dir: conv.getLinksSrcDirectory()) { include(name: '*.link') }
                 }
-            } else if (extensionLocations) {
+            } else if (conv.getExtLocations()) {
                 println "Generating link files..."
-                for (String extLoc : extensionLocations) {
+                for (String extLoc : conv.getExtLocations()) {
                     def linkFileName = extLoc.replaceAll("[\\\\/:]", "_")
-                    linkFileName = tempLinkDir + "/${linkFileName}.link"
+                    linkFileName = destLinkDir + "/${linkFileName}.link"
                     ant.echo(message: "path=${extLoc}", file: linkFileName)
                     println " -> generated " + linkFileName
                 }
             }
         }
         // Create the features directory and fill in
-        def featuresDir = buildDirectory + "/features"
+        def featuresDir = conv.getBuildDirectory() + "/features"
         println "Fetching features..."
         ant.mkdir(dir: featuresDir)
-        if (featuresSrcDir) {
-            ant.copy(todir: featuresDir) { fileset(dir: featuresSrcDir) }
+        if (conv.getFeaturesSrcDir()) {
+            ant.copy(todir: featuresDir) { fileset(dir: conv.getFeaturesSrcDir()) }
         }
         
         // Create the plugins directory and fill in
-        def pluginsDir = buildDirectory + "/plugins"
+        def pluginsDir = conv.getBuildDirectory() + "/plugins"
         println "Fetching plugins..."
         ant.mkdir(dir: pluginsDir)
-        if (!pluginsSrcDirList.isEmpty()) {
+        if (conv.getPluginsSrcDirList()) {
             ant.copy(todir: pluginsDir) {
-                pluginsSrcDirList.each { fileset(dir: it) }
+                conv.getPluginsSrcDirList().each { fileset(dir: it) }
             }
         }
         
         //Create the publish directory
-        if (publishDirectory) {
+        if (conv.getPublishDirectory()) {
             println "Creating the publication directory..."
-            ant.mkdir(dir: publishDirectory)
+            ant.mkdir(dir: conv.getPublishDirectory())
         }
     }
 

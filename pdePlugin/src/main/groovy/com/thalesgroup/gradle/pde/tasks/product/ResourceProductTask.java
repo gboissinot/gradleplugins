@@ -24,14 +24,17 @@
 
 package com.thalesgroup.gradle.pde.tasks.product;
 
+import java.io.IOException;
+
+import com.thalesgroup.gradle.pde.tasks.AntPdeResources;
 import com.thalesgroup.gradle.pde.tasks.CommonTask;
 import org.gradle.api.tasks.TaskAction;
 
 public class ResourceProductTask extends CommonTask {
 
     @TaskAction
-    protected void generate() {
-        new AntProductResource().execute(getProductPdeConvention(), getAnt());
+    protected void generate() throws IOException {
+        new AntPdeResources().execute(getProductPdeConvention(), getAnt());
     }
 
 }

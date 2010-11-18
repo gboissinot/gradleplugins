@@ -33,8 +33,7 @@ public class CleanFeatureTask extends CommonTask {
     @TaskAction
     protected void generate() {
         FeaturePdeConvention convention = getFeaturePdeConvention();
-        new AntPdeClean().execute(convention.getBuildDirectory(), convention.getBaseLocation(),
-                convention.getData(), getAnt());
+        new AntPdeClean().execute(convention, getAnt());
     }
 
 }

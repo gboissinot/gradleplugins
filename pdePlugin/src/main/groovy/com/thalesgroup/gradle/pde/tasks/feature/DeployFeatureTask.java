@@ -27,14 +27,14 @@ package com.thalesgroup.gradle.pde.tasks.feature;
 
 import org.gradle.api.tasks.TaskAction;
 
+import com.thalesgroup.gradle.pde.tasks.AntPdeDeploy;
 import com.thalesgroup.gradle.pde.tasks.CommonTask;
 
 public class DeployFeatureTask extends CommonTask {
 
-
     @TaskAction
     protected void generate() {
-        new AntFeatureDeploy().execute(getFeaturePdeConvention(), getAnt());
+        new AntPdeDeploy().execute(getFeaturePdeConvention(), getAnt());
     }
 
 }

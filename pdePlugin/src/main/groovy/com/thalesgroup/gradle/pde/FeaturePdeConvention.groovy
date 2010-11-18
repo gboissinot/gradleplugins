@@ -26,23 +26,22 @@ package com.thalesgroup.gradle.pde;
 
 import org.gradle.api.GradleException;
 import org.gradle.api.Project
-import static com.thalesgroup.gradle.pde.tasks.Util.normalizePath;
 
 public class FeaturePdeConvention extends PdeConvention {
     
-    private String featureName
+    private String[] features;
     
     FeaturePdeConvention(Project project, Map customValues) {
-        super(project, customValues)
+        super(project, customValues);
     }
 
-    @Override
-    public String getName() {
-        return this.featureName;
+    public String[] getFeatures() {
+        return this.features;
     }
+    
     @Override
-    public String getType() {
-        return "Feature";
+    public BuildType getType() {
+        return BuildType.feature;
     }    
     
 

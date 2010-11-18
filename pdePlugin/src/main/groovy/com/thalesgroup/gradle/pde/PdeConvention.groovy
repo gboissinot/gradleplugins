@@ -26,13 +26,12 @@ package com.thalesgroup.gradle.pde;
 
 import org.gradle.api.GradleException;
 import org.gradle.api.Project
-import static com.thalesgroup.gradle.pde.tasks.Util.normPathForAnt;
 
 public abstract class PdeConvention {
-    
     Project project;
     Map customValues;
     
+    String archiveNamePrefix;
     String timestamp;
     String buildDirectory;
     String builderDir;
@@ -63,9 +62,7 @@ public abstract class PdeConvention {
         this.customValues = customValues;
     }
     
-    public abstract String getName();
-    
-    public abstract String getType();
+    public abstract BuildType getType();
     
     public String getBaseLocation() {
         if (baseLocation == null) {
@@ -151,11 +148,23 @@ public abstract class PdeConvention {
         return normPathForAnt(publishDirectory)
     }
     
+    public String getCustomProperty(String key) {
+        return customValues.get(key);
+    }
+    
+    public String getArchiveNamePrefix() {
+        if (archiveNamePrefix == null) {
+            archiveNamePrefix = "${buildId}-${jobVersion}.${timestamp}"
+        }
+        return archiveNamePrefix;
+    }
+    
+    
+    
     public void print() {
         println "===================================================="
         println "*                PDE PARAMETERS                    *"
         println "===================================================="
-        println getType() + " name             : " + (getName() == null ? "" : getName());
         println "Job version              : " + (jobVersion == null ? "" : jobVersion);
         println "Timestamp                : " + (timestamp == null ? "" : timestamp);
         println ""
@@ -194,4 +203,14 @@ public abstract class PdeConvention {
         }
         println "===================================================="
     }
+    
+    
+    public static String normPathForAnt(String path) {
+        if (path == null) {
+            return null;
+        } else {
+            return path.replace('\\', '/');
+        }
+    }
+    
 }

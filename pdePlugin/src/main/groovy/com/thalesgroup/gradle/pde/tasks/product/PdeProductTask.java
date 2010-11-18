@@ -23,6 +23,7 @@
 
 package com.thalesgroup.gradle.pde.tasks.product;
 
+import com.thalesgroup.gradle.pde.tasks.AntPdeBuild;
 import com.thalesgroup.gradle.pde.tasks.CommonTask;
 import org.gradle.api.tasks.TaskAction;
 
@@ -30,7 +31,7 @@ public class PdeProductTask extends CommonTask {
 
     @TaskAction
     protected void generate() {
-        new AntProductPde().execute(getProductPdeConvention(), getCustomValues(), getAnt());
+        new AntPdeBuild().execute(getProductPdeConvention(), getCustomValues(), getAnt());
     }
 
 }

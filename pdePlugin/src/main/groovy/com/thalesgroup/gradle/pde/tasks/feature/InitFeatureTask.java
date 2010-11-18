@@ -23,12 +23,10 @@
 
 package com.thalesgroup.gradle.pde.tasks.feature;
 
-
 import com.thalesgroup.gradle.pde.FeaturePdeConvention;
 import com.thalesgroup.gradle.pde.tasks.AntPdeInit;
 import com.thalesgroup.gradle.pde.tasks.CommonTask;
 import org.gradle.api.tasks.TaskAction;
-
 
 public class InitFeatureTask extends CommonTask {
 
@@ -36,18 +34,7 @@ public class InitFeatureTask extends CommonTask {
     protected void generate() {
         FeaturePdeConvention convention = getFeaturePdeConvention();
         convention.print();
-        new AntPdeInit().execute(
-                convention.getBuildDirectory(),
-                convention.getBuilderDir(),
-                convention.getPluginsSrcDirList(),
-                convention.getFeaturesSrcDir(),
-                convention.getPublishDirectory(),
-                convention.getBaseLocation(),
-                convention.getLinksSrcDirectory(),
-                convention.getExtLocations(),
-                convention.getUsePreviousLinks(),
-                convention.getData(),
-                getAnt());
+        new AntPdeInit().execute(convention, getAnt());
     }
 
 }

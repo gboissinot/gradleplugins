@@ -24,6 +24,7 @@
 
 package com.thalesgroup.gradle.pde.tasks.feature;
 
+import com.thalesgroup.gradle.pde.tasks.AntPdeBuild;
 import com.thalesgroup.gradle.pde.tasks.CommonTask;
 import org.gradle.api.tasks.TaskAction;
 
@@ -32,7 +33,7 @@ public class PdeFeatureTask extends CommonTask {
 
     @TaskAction
     protected void generate() {
-        new AntFeaturePde().execute(getFeaturePdeConvention(), getCustomValues(), getAnt());
+        new AntPdeBuild().execute(getFeaturePdeConvention(), getCustomValues(), getAnt());
     }
 
 }

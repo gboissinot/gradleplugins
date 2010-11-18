@@ -38,14 +38,13 @@ public class ProductPdeConvention extends PdeConvention {
         super(project, customValues)
     }
     
-    @Override
-    public String getName() {
+    public String getProductName() {
         return this.productName;
     }
 
     @Override
-    public String getType() {
-        return "Product";
+    public BuildType getType() {
+        return BuildType.product;
     }    
     
 }
