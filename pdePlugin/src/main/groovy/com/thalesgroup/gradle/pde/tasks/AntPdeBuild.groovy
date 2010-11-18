@@ -54,27 +54,27 @@ class AntPdeBuild {
             args << "-buildfile \"${launcher}/plugins/org.eclipse.pde.build/scripts/build.xml\""
         }
         
-        args << "-DbuildDirectory=${conv.getBuildDirectory()}"
-        args << "-Dbuilder=${conv.getBuilderDir()}"
+        args << "-DbuildDirectory=\"${conv.getBuildDirectory()}\""
+        args << "-Dbuilder=\"${conv.getBuilderDir()}\""
 
-        args << "-Dtimestamp=${conv.getTimestamp()}"
-        args << "-Dbase=${conv.getBase()}"
-        args << "-DbaseLocation=${conv.getBaseLocation()}"
-        args << "-Dconfigs=${conv.getEnvConfigs()}"
-        args << "-DarchiveNamePrefix=${conv.getArchiveNamePrefix()}"
-        args << "-DjavacSource=${conv.getJavacSource()}"
-        args << "-DjavacTarget=${conv.getJavacTarget()}"
-        args << "-DbuildId=${conv.getBuildId()}"
+        args << "-Dbase=\"${conv.getBase()}\""
+        args << "-DbaseLocation=\"${conv.getBaseLocation()}\""
+        args << "-DjavacSource=\"${conv.getJavacSource()}\""
+        args << "-DjavacTarget=\"${conv.getJavacTarget()}\""
+        args << "-DbuildId=\"${conv.getBuildId()}\""
         
         if (conv.getType() == BuildType.product) {
-            def productFile = (ProductPdeConvention) conv.getProductName()
-            args << "-Dproduct=${productFile}"
+            def productFile = ((ProductPdeConvention) conv).getProductName()
+            def archive = ((ProductPdeConvention) conv).getArchiveNamePrefix()
+            args << "-Dproduct=\"${productFile}\""
+            args << "-Dconfigs=\"${conv.getEnvConfigs()}\""
+            args << "-DarchiveNamePrefix=\"${archive}\""
         }
         
         //----------  Build the pluginPath
         if (conv.getExtLocations() && !conv.getUsePreviousLinks()) {
             String pluginPath = conv.getExtLocations().join(File.pathSeparator)
-            args << "-DpluginPath=${pluginPath}"
+            args << "-DpluginPath=\"${pluginPath}\""
         }
         
         //Built from the given property file

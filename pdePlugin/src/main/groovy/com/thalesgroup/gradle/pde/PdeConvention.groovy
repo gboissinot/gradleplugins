@@ -31,8 +31,7 @@ public abstract class PdeConvention {
     Project project;
     Map customValues;
     
-    String archiveNamePrefix;
-    String timestamp;
+
     String buildDirectory;
     String builderDir;
     List<String> pluginsSrcDirList;
@@ -148,16 +147,7 @@ public abstract class PdeConvention {
         return normPathForAnt(publishDirectory)
     }
     
-    public String getCustomProperty(String key) {
-        return customValues.get(key);
-    }
-    
-    public String getArchiveNamePrefix() {
-        if (archiveNamePrefix == null) {
-            archiveNamePrefix = "${buildId}-${jobVersion}.${timestamp}"
-        }
-        return archiveNamePrefix;
-    }
+
     
     
     
@@ -166,7 +156,16 @@ public abstract class PdeConvention {
         println "*                PDE PARAMETERS                    *"
         println "===================================================="
         println "Job version              : " + (jobVersion == null ? "" : jobVersion);
-        println "Timestamp                : " + (timestamp == null ? "" : timestamp);
+        println "BuildId                  : " + (buildId == null ? "" : buildId);
+        if (getType() == BuildType.product) {
+            println "Product                   : " + ((ProductPdeConvention) this).getProductName();
+            println "Archive Name Prefix       : " + ((ProductPdeConvention) this).getArchiveNamePrefix();
+        } else {
+        println "Built Features           : ";
+            for (String feat : ((FeaturePdeConvention) this).getFeatures()) {
+                println " -> " + feat;
+            }
+        }
         println ""
         println "Build directory          : " + (getBuildDirectory() == null ? "" : getBuildDirectory());
         println "Launcher Path            : " + (getEclipseLauncher() == null ? "" : getEclipseLauncher());

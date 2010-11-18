@@ -33,6 +33,7 @@ import org.gradle.api.Project
 public class ProductPdeConvention extends PdeConvention {
     
     private String productName
+    private String archiveNamePrefix;
     
     ProductPdeConvention(Project project, Map customValues) {
         super(project, customValues)
@@ -42,6 +43,13 @@ public class ProductPdeConvention extends PdeConvention {
         return this.productName;
     }
 
+    public String getArchiveNamePrefix() {
+        if (archiveNamePrefix == null) {
+            archiveNamePrefix = "${buildId}-${jobVersion}.${buildId}"
+        }
+        return archiveNamePrefix;
+    }
+    
     @Override
     public BuildType getType() {
         return BuildType.product;

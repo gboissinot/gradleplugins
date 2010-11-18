@@ -27,28 +27,37 @@ import groovy.util.AntBuilder;
 
 import com.thalesgroup.gradle.pde.BuildType;
 import com.thalesgroup.gradle.pde.PdeConvention;
+import com.thalesgroup.gradle.pde.FeaturePdeConvention;
 
 class AntPdeDeploy {
 
     void execute(PdeConvention conv, AntBuilder ant) {
 
-        def zipDir = "${conv.getBuildDirectory()}/I.${conv.getBuildId()}"
-        def zipFileName = "${zipDir}/${conv.getArchiveNamePrefix()}";
-                
-        if (conv.getType() == BuildType.product && conv.getEnvConfigs() != null) {
-            def conf = conv.getEnvConfigs().replace(' ', '');
-            conf = conf.replace(',', '.');
-            if (!"*.*.*".equals(conf)) {
-                zipFileName << "-${conf}"
+        //delete the publish directory
+        println "Deleting ${conv.getPublishDirectory()} file..."
+        ant.delete(dir: conv.getPublishDirectory())
+
+        
+        def zipDir = "${conv.getBuildDirectory()}/${conv.getBuildId()}"
+        
+        if (conv.getType() == BuildType.product) {
+            def zipFileName = "${zipDir}/${conv.getArchiveNamePrefix()}";
+            
+            if (conv.getEnvConfigs()) {
+                def conf = conv.getEnvConfigs().replace(' ', '');
+                conf = conf.replace(',', '.');
+                if (!"*.*.*".equals(conf)) {
+                    zipFileName << "-${conf}"
+                }
+            }
+            zipFileName << ".zip"
+            ant.unzip(dest: conv.getPublishDirectory(), src: zipFileName)
+        } else {
+            for (String feat : ((FeaturePdeConvention) conv).getFeatures()) {
+                def zipFileName = "${zipDir}/${feat}-${conv.getBuildId()}.zip";
+                ant.unzip(dest: conv.getPublishDirectory(), src: zipFileName)
             }
         }
-        zipFileName << ".zip"
-        
-        //delete the publish directory
-        println "Deleting ${zipFileName} file..."
-        ant.delete(dir: conv.getPublishDirectory())
-        
-        ant.unzip(dest: conv.getPublishDirectory(), src: zipFileName)
     }
     
 }
