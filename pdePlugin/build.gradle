@@ -18,7 +18,7 @@ apply plugin: 'eclipse'
 
 
 
-version = '6.8-' + new java.text.SimpleDateFormat("yyyyMMddHHmmss").format(new Date())
+version = '7.0.0-' + new java.text.SimpleDateFormat("yyyyMMddHHmmss").format(new Date())
 
 
 

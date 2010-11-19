@@ -48,11 +48,23 @@ class AntPdeBuild {
         }
         
         args << "-application org.eclipse.ant.core.antRunner"
+        
+        def scriptsDir;
+        
         if (conv.getPdeBuildPluginVersion()) {
-            args << "-buildfile \"${launcher}/plugins/org.eclipse.pde.build_${conv.getPdeBuildPluginVersion()}/scripts/build.xml\""
+            scriptsDir = "${launcher}/plugins/org.eclipse.pde.build_${conv.getPdeBuildPluginVersion()}/scripts"
         } else {
-            args << "-buildfile \"${launcher}/plugins/org.eclipse.pde.build/scripts/build.xml\""
+            scriptsDir = "${launcher}/plugins/org.eclipse.pde.build/scripts"
         }
+        
+        if (conv.getType() == BuildType.product) {
+            args << "-buildfile \"${scriptsDir}/productBuild/productBuild.xml\""
+        } else {
+            args << "-buildfile \"${scriptsDir}/build.xml\""
+        }
+        
+        
+        
         
         args << "-DbuildDirectory=\"${conv.getBuildDirectory()}\""
         args << "-Dbuilder=\"${conv.getBuilderDir()}\""
@@ -66,12 +78,10 @@ class AntPdeBuild {
         
         if (conv.getType() == BuildType.product) {
             def productFile = ((ProductPdeConvention) conv).getProductFile()
-            def productId = ((ProductPdeConvention) conv).getProductId()
             def archive = ((ProductPdeConvention) conv).getArchiveNamePrefix()
-            args << "-DtopLevelElementType=feature"
-            args << "-DtopLevelElementId=${productId}"
             args << "-Dproduct=\"${productFile}\""
             args << "-Dconfigs=\"${conv.getEnvConfigs()}\""
+            args << "-DarchiveNamePrefix=${archive}"
         }
         
         if (conv.getJavacDebugInfo()) {

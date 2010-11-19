@@ -25,34 +25,25 @@ package com.thalesgroup.gradle.pde;
 
 
 import java.util.List;
-
 import org.gradle.api.GradleException;
 import org.gradle.api.Project
 
 
 public class ProductPdeConvention extends PdeConvention {
     
-    private String productId
     private String productFile
-    private String archiveNamePrefix;
+    private String archiveNamePrefix
     
     ProductPdeConvention(Project project, Map customValues) {
         super(project, customValues)
     }
     
-    public String getProductId() {
-        return this.productId;
-    }
-    
     public String getProductFile() {
-        return this.productFile;
+        return normPathForAnt(this.productFile);
     }
     
     public String getArchiveNamePrefix() {
-        if (archiveNamePrefix == null) {
-            archiveNamePrefix = "${productId}-${jobVersion}.${buildId}"
-        }
-        return archiveNamePrefix;
+        return archiveNamePrefix
     }
     
     @Override
@@ -62,7 +53,7 @@ public class ProductPdeConvention extends PdeConvention {
     
     @Override
     public void printBuiltElements() {
-        println "Product                  : " + getProductId();
+        println "Product File             : " + getProductFile();
         println "Archive Name Prefix      : " + getArchiveNamePrefix();
     }
 }
