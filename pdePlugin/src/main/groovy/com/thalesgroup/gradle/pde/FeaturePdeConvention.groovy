@@ -34,7 +34,7 @@ public class FeaturePdeConvention extends PdeConvention {
     FeaturePdeConvention(Project project, Map customValues) {
         super(project, customValues);
     }
-
+    
     public String[] getFeatures() {
         return this.features;
     }
@@ -44,5 +44,11 @@ public class FeaturePdeConvention extends PdeConvention {
         return BuildType.feature;
     }    
     
-
+    @Override
+    public void printBuiltElements() {
+        println "Features                  : ";
+        for (String feat : getFeatures()) {
+            println " -> " + feat;
+        }
+    }
 }

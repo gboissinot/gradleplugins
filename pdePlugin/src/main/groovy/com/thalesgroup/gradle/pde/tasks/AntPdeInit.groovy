@@ -57,8 +57,10 @@ class AntPdeInit {
         def featuresDir = conv.getBuildDirectory() + "/features"
         println "Fetching features..."
         ant.mkdir(dir: featuresDir)
-        if (conv.getFeaturesSrcDir()) {
-            ant.copy(todir: featuresDir) { fileset(dir: conv.getFeaturesSrcDir()) }
+        if (conv.getFeaturesSrcDirList()) {
+            ant.copy(todir: featuresDir) {
+                conv.getFeaturesSrcDirList().each { fileset(dir: it) }
+            }
         }
         
         // Create the plugins directory and fill in

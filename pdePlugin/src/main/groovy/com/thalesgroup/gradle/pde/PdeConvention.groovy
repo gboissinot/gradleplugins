@@ -35,7 +35,7 @@ public abstract class PdeConvention {
     String buildDirectory;
     String builderDir;
     List<String> pluginsSrcDirList;
-    String featuresSrcDir;
+    List<String> featuresSrcDirList;
     String eclipseLauncher;
     String pdeBuildPluginVersion;
     String equinoxLauncherPluginVersion;
@@ -65,7 +65,7 @@ public abstract class PdeConvention {
     
     public String getBaseLocation() {
         if (baseLocation == null) {
-            baseLocation = base + "/eclipse"
+            baseLocation = "${base}/eclipse"
         }
         return normPathForAnt(baseLocation)
     }
@@ -148,7 +148,7 @@ public abstract class PdeConvention {
     }
     
 
-    
+    public abstract void printBuiltElements();
     
     
     public void print() {
@@ -157,15 +157,7 @@ public abstract class PdeConvention {
         println "===================================================="
         println "Job version              : " + (jobVersion == null ? "" : jobVersion);
         println "BuildId                  : " + (buildId == null ? "" : buildId);
-        if (getType() == BuildType.product) {
-            println "Product                   : " + ((ProductPdeConvention) this).getProductName();
-            println "Archive Name Prefix       : " + ((ProductPdeConvention) this).getArchiveNamePrefix();
-        } else {
-        println "Built Features           : ";
-            for (String feat : ((FeaturePdeConvention) this).getFeatures()) {
-                println " -> " + feat;
-            }
-        }
+        printBuiltElements();
         println ""
         println "Build directory          : " + (getBuildDirectory() == null ? "" : getBuildDirectory());
         println "Launcher Path            : " + (getEclipseLauncher() == null ? "" : getEclipseLauncher());

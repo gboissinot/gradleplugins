@@ -59,13 +59,17 @@ class AntPdeBuild {
 
         args << "-Dbase=\"${conv.getBase()}\""
         args << "-DbaseLocation=\"${conv.getBaseLocation()}\""
-        args << "-DjavacSource=\"${conv.getJavacSource()}\""
-        args << "-DjavacTarget=\"${conv.getJavacTarget()}\""
-        args << "-DbuildId=\"${conv.getBuildId()}\""
+        args << "-DjavacSource=${conv.getJavacSource()}"
+        args << "-DjavacTarget=${conv.getJavacTarget()}"
+        args << "-DbuildId=${conv.getBuildId()}"
+        args << "-DbuildLabel=${conv.getBuildId()}"
         
         if (conv.getType() == BuildType.product) {
-            def productFile = ((ProductPdeConvention) conv).getProductName()
+            def productFile = ((ProductPdeConvention) conv).getProductFile()
+            def productName = ((ProductPdeConvention) conv).getProductName()
             def archive = ((ProductPdeConvention) conv).getArchiveNamePrefix()
+            args << "-DtopLevelElementType=product"
+            args << "-DtopLevelElementId=${productName}"
             args << "-Dproduct=\"${productFile}\""
             args << "-Dconfigs=\"${conv.getEnvConfigs()}\""
             args << "-DarchiveNamePrefix=\"${archive}\""

@@ -28,6 +28,7 @@ import groovy.util.AntBuilder;
 import com.thalesgroup.gradle.pde.BuildType;
 import com.thalesgroup.gradle.pde.PdeConvention;
 import com.thalesgroup.gradle.pde.FeaturePdeConvention;
+import com.thalesgroup.gradle.pde.ProductPdeConvention;
 
 class AntPdeDeploy {
 
@@ -41,7 +42,8 @@ class AntPdeDeploy {
         def zipDir = "${conv.getBuildDirectory()}/${conv.getBuildId()}"
         
         if (conv.getType() == BuildType.product) {
-            def zipFileName = "${zipDir}/${conv.getArchiveNamePrefix()}";
+            def archivePrefix = ((ProductPdeConvention) conv).getArchiveNamePrefix();
+            def zipFileName = "${zipDir}/${archivePrefix}";
             
             if (conv.getEnvConfigs()) {
                 def conf = conv.getEnvConfigs().replace(' ', '');

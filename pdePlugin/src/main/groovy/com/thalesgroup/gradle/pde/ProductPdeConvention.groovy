@@ -33,6 +33,7 @@ import org.gradle.api.Project
 public class ProductPdeConvention extends PdeConvention {
     
     private String productName
+    private String productFile
     private String archiveNamePrefix;
     
     ProductPdeConvention(Project project, Map customValues) {
@@ -40,12 +41,16 @@ public class ProductPdeConvention extends PdeConvention {
     }
     
     public String getProductName() {
-        return this.productName;
+        return this.productName.replaceAll("[/\\\\]", ".");
     }
-
+    
+    public String getProductFile() {
+        return this.productFile;
+    }
+    
     public String getArchiveNamePrefix() {
         if (archiveNamePrefix == null) {
-            archiveNamePrefix = "${buildId}-${jobVersion}.${buildId}"
+            archiveNamePrefix = "${productName}-${jobVersion}.${buildId}"
         }
         return archiveNamePrefix;
     }
@@ -55,4 +60,9 @@ public class ProductPdeConvention extends PdeConvention {
         return BuildType.product;
     }    
     
+    @Override
+    public void printBuiltElements() {
+        println "Product                  : " + getProductName();
+        println "Archive Name Prefix      : " + getArchiveNamePrefix();
+    }
 }
