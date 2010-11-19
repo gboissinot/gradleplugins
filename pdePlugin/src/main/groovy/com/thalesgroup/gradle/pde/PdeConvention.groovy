@@ -31,7 +31,7 @@ public abstract class PdeConvention {
     Project project;
     Map customValues;
     
-
+    Boolean javacDebugInfo;
     String buildDirectory;
     String builderDir;
     List<String> pluginsSrcDirList;

@@ -66,13 +66,16 @@ class AntPdeBuild {
         
         if (conv.getType() == BuildType.product) {
             def productFile = ((ProductPdeConvention) conv).getProductFile()
-            def productName = ((ProductPdeConvention) conv).getProductName()
+            def productId = ((ProductPdeConvention) conv).getProductId()
             def archive = ((ProductPdeConvention) conv).getArchiveNamePrefix()
-            args << "-DtopLevelElementType=product"
-            args << "-DtopLevelElementId=${productName}"
+            args << "-DtopLevelElementType=feature"
+            args << "-DtopLevelElementId=${productId}"
             args << "-Dproduct=\"${productFile}\""
             args << "-Dconfigs=\"${conv.getEnvConfigs()}\""
-            args << "-DarchiveNamePrefix=\"${archive}\""
+        }
+        
+        if (conv.getJavacDebugInfo()) {
+            args << "-DjavacDebugInfo=true"
         }
         
         //----------  Build the pluginPath
