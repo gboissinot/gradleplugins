@@ -23,23 +23,12 @@
 
 package com.thalesgroup.gradle.pde.tasks;
 
-import com.thalesgroup.gradle.pde.FeaturePdeConvention;
-import com.thalesgroup.gradle.pde.ProductPdeConvention;
 import org.gradle.api.internal.ConventionTask;
 
-import java.util.Map;
+import com.thalesgroup.gradle.pde.FeaturePdeConvention;
+import com.thalesgroup.gradle.pde.ProductPdeConvention;
 
 public class CommonTask extends ConventionTask {
-
-    private Map<String, Object> customValues;
-
-    public void setCustomValues(Map<String, Object> customValues) {
-        this.customValues = customValues;
-    }
-
-    public Map<String, Object> getCustomValues() {
-        return this.customValues;
-    }
 
     protected FeaturePdeConvention getFeaturePdeConvention() {
         return (FeaturePdeConvention) (getProject().getProperties().get("FeaturePde"));

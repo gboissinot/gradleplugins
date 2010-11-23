@@ -31,7 +31,7 @@ public class PdeProductTask extends CommonTask {
 
     @TaskAction
     protected void generate() {
-        new AntPdeBuild().execute(getProductPdeConvention(), getCustomValues(), getAnt());
+        new AntPdeBuild().execute(getProductPdeConvention(), getAnt());
     }
 
 }

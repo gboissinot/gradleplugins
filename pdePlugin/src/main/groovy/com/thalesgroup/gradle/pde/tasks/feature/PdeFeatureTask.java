@@ -33,7 +33,7 @@ public class PdeFeatureTask extends CommonTask {
 
     @TaskAction
     protected void generate() {
-        new AntPdeBuild().execute(getFeaturePdeConvention(), getCustomValues(), getAnt());
+        new AntPdeBuild().execute(getFeaturePdeConvention(), getAnt());
     }
 
 }

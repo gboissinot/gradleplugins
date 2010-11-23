@@ -28,54 +28,42 @@ import org.gradle.api.GradleException;
 import org.gradle.api.Project
 
 public abstract class PdeConvention {
-    Project project;
-    Map customValues;
     
-    Boolean javacDebugInfo;
-    String buildDirectory;
-    String builderDir;
+    // gradle fields
+    Project project;
+
+    // mandatory plugin fields
     List<String> pluginsSrcDirList;
     List<String> featuresSrcDirList;
     String eclipseLauncher;
+    String publishDirectory;
+    
+    // optional plugin fields
     String pdeBuildPluginVersion;
     String equinoxLauncherPluginVersion;
-    String base;
-    String baseLocation;
-    String linksSrcDirectory;
-    List<String> extLocations;
-    String buildId;
-    String publishDirectory;
-    String jobVersion;
-    String envConfigs = "*, *, *";
     Boolean usePreviousLinks;
-    String jvmOptions = "-Xms128m -Xmx512m -XX:MaxPermSize=256m -XX:+UseConcMarkSweepGC -XX:+CMSClassUnloadingEnabled";
-    String javacSource = "1.5";
-    String javacTarget = "1.5";
-    String data = "eclipsews";
-    String eclipseExtensionsRoot = eclipseExtensionsRoot;
-    String rcpCleaner = rcpCleaner;
+    List<String> extLocations;
+    String linksSrcDirectory;
+    Map additionalProperties = new HashMap<String, Object>();
     String buildPropertiesFile;
+    String rcpCleaner = rcpCleaner;
+    String eclipseExtensionsRoot = eclipseExtensionsRoot;
+    String data;
+    String jvmOptions = "-Xms128m -Xmx512m -XX:MaxPermSize=256m -XX:+UseConcMarkSweepGC -XX:+CMSClassUnloadingEnabled";
+
+    // mandatory PDE properties
+    String base;
+    String builderDir;
+    String baseLocation;
+    String buildDirectory;
+    String buildId = "BUILD_ID";
     
-    public PdeConvention(Project project, Map customValues) {
+    
+    public PdeConvention(Project project) {
         this.project = project;
-        this.customValues = customValues;
     }
     
     public abstract BuildType getType();
-    
-    public String getBaseLocation() {
-        if (baseLocation == null) {
-            baseLocation = "${base}/eclipse"
-        }
-        return normPathForAnt(baseLocation)
-    }
-    
-    public String getBuilderDir() {
-        if (builderDir == null) {
-            builderDir = "${buildDirectory}/builder"
-        }
-        return normPathForAnt(builderDir)
-    }
     
     public List<String> getExtLocations() {
         List<String> locations = new ArrayList<String>();
@@ -119,6 +107,28 @@ public abstract class PdeConvention {
         return normPathForAnt(base)
     }
     
+    public String getBaseLocation() {
+        if (additionalProperties.get("baseLocation")) {
+            baseLocation = additionalProperties.get("baseLocation")
+            additionalProperties.remove("baseLocation")
+        } else if (baseLocation == null) {
+            baseLocation = base + "/eclipse"
+        }
+        return normPathForAnt(baseLocation)
+    }
+    
+    
+    public String getBuilderDir() {
+        if (additionalProperties.get("builderDir")) {
+            builderDir = additionalProperties.get("builderDir");
+            additionalProperties.remove("builderDir")
+        } else if (builderDir == null) {
+            builderDir = buildDirectory + "/builder"
+        }
+        return normPathForAnt(builderDir)
+    }
+    
+    
     public String getBuildDirectory() {
         return normPathForAnt(buildDirectory)
     }
@@ -132,12 +142,25 @@ public abstract class PdeConvention {
     }
     
     public String getData() {
+        if (data == null) {
+            data = "eclipsews"
+        }
         if (buildDirectory) {
             return normPathForAnt(buildDirectory + "/" + data)
         } else {
             return normPathForAnt(data)
         }
     }
+    
+    public String getBuildId() {
+        if (additionalProperties.get("buildId")) {
+            buildId = additionalProperties.get("buildId");
+            additionalProperties.remove("buildId")
+        }
+        return buildId
+    }
+    
+    
     
     public String getLinksSrcDirectory() {
         return normPathForAnt(linksSrcDirectory)
@@ -155,40 +178,29 @@ public abstract class PdeConvention {
         println "===================================================="
         println "*                PDE PARAMETERS                    *"
         println "===================================================="
-        println "Job version              : " + (jobVersion == null ? "" : jobVersion);
-        println "BuildId                  : " + (buildId == null ? "" : buildId);
         printBuiltElements();
-        println ""
-        println "Build directory          : " + (getBuildDirectory() == null ? "" : getBuildDirectory());
-        println "Launcher Path            : " + (getEclipseLauncher() == null ? "" : getEclipseLauncher());
-        println "Launcher Plugin Version  : " + (equinoxLauncherPluginVersion == null ? "" : equinoxLauncherPluginVersion);
-        println "PDE Plugin Version       : " + (pdeBuildPluginVersion == null ? "" : pdeBuildPluginVersion);
-        println "Eclipse workspace (data) : " + (getData() == null ? "" : getData());
-        println ""
-        println "Builder directory        : " + (getBuilderDir() == null ? "" : getBuilderDir());
-        println "Target (base)            : " + (getBase() == null ? "" : getBase());
-        println "Target (baseLocation)    : " + (getBaseLocation() == null ? "" : getBaseLocation());
+        println "Build directory         : " + (getBuildDirectory() == null ? "" : getBuildDirectory());
+        println "Launcher Path           : " + (getEclipseLauncher() == null ? "" : getEclipseLauncher());
+        println "Launcher Plugin Version : " + (equinoxLauncherPluginVersion == null ? "" : equinoxLauncherPluginVersion);
+        println "PDE Plugin Version      : " + (pdeBuildPluginVersion == null ? "" : pdeBuildPluginVersion);
+        println "Eclipse workspace       : " + (getData() == null ? "" : getData());
+        println "Target Platform         : " + (getBase() == null ? "" : getBase());
         
         if (linksSrcDirectory) {
-            println "Link files directory     : " + getLinksSrcDirectory();
+            println "Link files directory    : " + getLinksSrcDirectory();
         } else {
             if (extLocations) {
-                println "Extension Locations      : "
+                println "Extension Locations     : "
                 getExtLocations().each { println " -> " + it }
             }
         }
         
-        println ""
-        println "JVM Options              : " + (jvmOptions == null ? "" : jvmOptions);
-        println "Environement Config      : " + (envConfigs == null ? "" : envConfigs);
-        println "Java source version      : " + (javacSource == null ? "" : javacSource);
-        println "Java target version      : " + (javacTarget == null ? "" : javacTarget);
-        println ""
-        println "Publish directory        : " + (getPublishDirectory() == null ? "" : getPublishDirectory());
+        println "JVM Options             : " + (jvmOptions == null ? "" : jvmOptions);
+        println "Publish directory       : " + (getPublishDirectory() == null ? "" : getPublishDirectory());
         
-        if (!customValues.values().isEmpty()) {
+        if (additionalProperties != null && !additionalProperties.values().isEmpty()) {
             println "----- Additional parameters -----"
-            for (Map.Entry<String, String> entry: customValues.entrySet()) {
+            for (Map.Entry<String, String> entry: additionalProperties.entrySet()) {
                 println " -> " + entry.getKey() + " = " + entry.getValue();
             }
         }

@@ -31,8 +31,8 @@ public class FeaturePdeConvention extends PdeConvention {
     
     private String[] features;
     
-    FeaturePdeConvention(Project project, Map customValues) {
-        super(project, customValues);
+    FeaturePdeConvention(Project project) {
+        super(project);
     }
     
     public String[] getFeatures() {

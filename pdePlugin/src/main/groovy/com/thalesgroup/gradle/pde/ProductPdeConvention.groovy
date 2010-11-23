@@ -32,18 +32,13 @@ import org.gradle.api.Project
 public class ProductPdeConvention extends PdeConvention {
     
     private String productFile
-    private String archiveNamePrefix
     
-    ProductPdeConvention(Project project, Map customValues) {
-        super(project, customValues)
+    ProductPdeConvention(Project project) {
+        super(project)
     }
     
     public String getProductFile() {
         return normPathForAnt(this.productFile);
-    }
-    
-    public String getArchiveNamePrefix() {
-        return archiveNamePrefix
     }
     
     @Override
@@ -53,7 +48,6 @@ public class ProductPdeConvention extends PdeConvention {
     
     @Override
     public void printBuiltElements() {
-        println "Product File             : " + getProductFile();
-        println "Archive Name Prefix      : " + getArchiveNamePrefix();
+        println "Product File            : " + getProductFile();
     }
 }

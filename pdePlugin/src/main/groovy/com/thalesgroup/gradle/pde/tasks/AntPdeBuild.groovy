@@ -33,7 +33,7 @@ import com.thalesgroup.gradle.pde.ProductPdeConvention;
 
 class AntPdeBuild {
 
-    void execute(PdeConvention conv, Map<String, Object> customValues, AntBuilder ant) {
+    void execute(PdeConvention conv, AntBuilder ant) {
         
         String launcher = conv.getEclipseLauncher()
 
@@ -63,29 +63,18 @@ class AntPdeBuild {
             args << "-buildfile \"${scriptsDir}/build.xml\""
         }
         
-        
-        
-        
         args << "-DbuildDirectory=\"${conv.getBuildDirectory()}\""
         args << "-Dbuilder=\"${conv.getBuilderDir()}\""
 
         args << "-Dbase=\"${conv.getBase()}\""
         args << "-DbaseLocation=\"${conv.getBaseLocation()}\""
-        args << "-DjavacSource=${conv.getJavacSource()}"
-        args << "-DjavacTarget=${conv.getJavacTarget()}"
-        args << "-DbuildId=${conv.getBuildId()}"
-        args << "-DbuildLabel=${conv.getBuildId()}"
+        
+        args << "-DbuildId=\"${conv.getBuildId()}\""
+        
         
         if (conv.getType() == BuildType.product) {
             def productFile = ((ProductPdeConvention) conv).getProductFile()
-            def archive = ((ProductPdeConvention) conv).getArchiveNamePrefix()
             args << "-Dproduct=\"${productFile}\""
-            args << "-Dconfigs=\"${conv.getEnvConfigs()}\""
-            args << "-DarchiveNamePrefix=${archive}"
-        }
-        
-        if (conv.getJavacDebugInfo()) {
-            args << "-DjavacDebugInfo=true"
         }
         
         //----------  Build the pluginPath
@@ -97,8 +86,8 @@ class AntPdeBuild {
         //Built from the given property file
         //The properties are added at the end of the command line
         //The command line properties override the default properties from the file
-        if (!customValues.values().isEmpty()) {
-            for (Map.Entry<String, String> entry: customValues.entrySet()){
+        if (conv.getAdditionalProperties() != null && !conv.getAdditionalProperties().values().isEmpty()) {
+            for (Map.Entry<String, Object> entry: conv.getAdditionalProperties().entrySet()){
                 args << "-D${entry.getKey()}=\"${entry.getValue()}\"";
             }
         }

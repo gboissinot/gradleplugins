@@ -40,94 +40,52 @@ public class FeaturePdeBuild implements Plugin<Project> {
     
     
     public void apply(final Project project) {
-        HashMap<String, ?> customValues = new HashMap<String, String>();
-        FeaturePdeConvention featurePdeConvention = new FeaturePdeConvention(project, customValues);
+        FeaturePdeConvention featurePdeConvention = new FeaturePdeConvention(project);
         project.setProperty("FeaturePde", featurePdeConvention);
-        configureClean(project, customValues);
-        configureInit(project, customValues);
-        configureProcessResources(project, customValues);
-        configurePdeBuild(project, customValues);
-        configureDeploy(project, customValues);
-        
-        
-        //Built from the given property file
-        //The properties are added at the end of the command line
-        //The command line properties override the default properties from the file
-        /*
-        project.afterEvaluate {
-            String additionalPropertiesPath = featurePdeConvention.getAdditionalPropertiesPath()
-            if (additionalPropertiesPath) {
-                File propertiesFile = new File(additionalPropertiesPath)
-                FileInputStream fis = new FileInputStream(propertiesFile)
-                Properties properties = new Properties()
-                properties.load(fis)
-                for (String propertyName: properties.propertyNames()) {
-                    try{
-                        Field field = FeaturePdeConvention.class.getDeclaredField(propertyName)
-                        field.setAccessible(true)
-                        field.set(featurePdeConvention, properties.getProperty(propertyName))
-                    }
-                    catch (java.lang.NoSuchFieldException nfe){
-                        //The field is a custom field
-                        customValues.put(propertyName, properties.getProperty(propertyName))
-                    }
-                } 
-                fis.close()
-            }
-        }
-        */
+        configureClean(project);
+        configureInit(project);
+        configureProcessResources(project);
+        configurePdeBuild(project);
+        configureDeploy(project);
     }
     
-    private void configureClean(Project project, final Map<String, ?> customValues) {
-        project.getTasks().withType(CleanFeatureTask.class).allTasks(new Action<CleanFeatureTask>() {
-                    public void execute(CleanFeatureTask task) {
-                        task.setCustomValues(customValues);
-                    }
-                });
-        project.getTasks().add(CLEAN_TASK_NAME, CleanFeatureTask.class).setDescription("Cleaning...");
+    private void configureClean(Project project) {
+        project.getTasks().add(CLEAN_TASK_NAME, CleanFeatureTask.class).setDescription("Deletes the build directory");
     }
     
     
-    private void configureInit(Project project, final Map<String, ?> customValues) {
-        project.getTasks().withType(InitFeatureTask.class).allTasks(new Action<InitFeatureTask>() {
-                    public void execute(InitFeatureTask task) {
-                        task.setCustomValues(customValues);
-                    }
-                });
-        project.getTasks().add(INIT_TASK_NAME, InitFeatureTask.class).setDescription("Initialization...");
+    private void configureInit(Project project) {
+        project.getTasks().add(INIT_TASK_NAME, InitFeatureTask.class).setDescription("Initializes the build directory and the target platform");
     }
     
     
-    private void configureProcessResources(Project project, final Map<String, ?> customValues) {
+    private void configureProcessResources(Project project) {
         project.getTasks().withType(ResourceFeatureTask.class).allTasks(new Action<ResourceFeatureTask>() {
                     public void execute(ResourceFeatureTask task) {
                         task.dependsOn(INIT_TASK_NAME);
-                        task.setCustomValues(customValues);
                     }
                 });
-        project.getTasks().add(PROCESS_RESOURCES_TASK_NAME, ResourceFeatureTask.class).setDescription("Process resources.");
+        project.getTasks().add(PROCESS_RESOURCES_TASK_NAME, ResourceFeatureTask.class).setDescription("Processes PDE resources");
     }
     
     
-    private void configurePdeBuild(final Project project, final Map<String, ?> customValues) {
+    private void configurePdeBuild(final Project project) {
         project.getTasks().withType(PdeFeatureTask.class).allTasks(new Action<PdeFeatureTask>() {
                     public void execute(PdeFeatureTask pdeTask) {
                         pdeTask.dependsOn(PROCESS_RESOURCES_TASK_NAME);
-                        pdeTask.setCustomValues(customValues);
                     }
                 });
-        project.getTasks().add(PDE_BUILD_TASK_NAME, PdeFeatureTask.class).setDescription("Launch PDE.");
+        project.getTasks().add(PDE_BUILD_TASK_NAME, PdeFeatureTask.class).setDescription("Launches the PDE build process");
     }
     
     
-    private void configureDeploy(Project project, final Map<String, ?> customValues) {
+    private void configureDeploy(Project project) {
         project.getTasks().withType(DeployFeatureTask.class).allTasks(new Action<DeployFeatureTask>() {
                     public void execute(DeployFeatureTask task) {
-                        task.setCustomValues(customValues);
                         task.dependsOn(PDE_BUILD_TASK_NAME);
                     }
                 });
-        project.getTasks().add(UPLOAD_TASK_NAME, DeployFeatureTask.class).setDescription("Deploying...");
+        project.getTasks().add(UPLOAD_TASK_NAME, DeployFeatureTask.class).setDescription("Unzips artifacts produced by the PDE build into the publish directory");
     }
 }
 

@@ -39,25 +39,16 @@ class AntPdeDeploy {
         ant.delete(dir: conv.getPublishDirectory())
 
         
-        def zipDir = "${conv.getBuildDirectory()}/${conv.getBuildId()}"
+        def buildLabel = conv.getAdditionalProperties().get("buildLabel")
+        if (buildLabel == null) {
+            buildLabel = conv.getBuildId()
+        }
         
-        if (conv.getType() == BuildType.product) {
-            def archivePrefix = ((ProductPdeConvention) conv).getArchiveNamePrefix();
-            def zipFileName = "${zipDir}/${archivePrefix}";
-            
-            if (conv.getEnvConfigs()) {
-                def conf = conv.getEnvConfigs().replace(' ', '');
-                conf = conf.replace(',', '.');
-                if (!"*.*.*".equals(conf)) {
-                    zipFileName << "-${conf}"
-                }
-            }
-            zipFileName << ".zip"
-            ant.unzip(dest: conv.getPublishDirectory(), src: zipFileName)
-        } else {
-            for (String feat : ((FeaturePdeConvention) conv).getFeatures()) {
-                def zipFileName = "${zipDir}/${feat}-${conv.getBuildId()}.zip";
-                ant.unzip(dest: conv.getPublishDirectory(), src: zipFileName)
+        def zipDir = "${conv.getBuildDirectory()}/${buildLabel}"
+        
+        ant.unzip(dest: conv.getPublishDirectory()) {
+            fileset(dir: zipDir) {
+                include(name: "*.zip")
             }
         }
     }
