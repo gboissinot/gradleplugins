@@ -1,15 +1,15 @@
 //Gradle 0.9-rc-1
 //Command Example: gradle pdeClean pdeBuild -i -S
 
-apply plugin: 'FeaturePde'
-defaultTasks 'pdeClean', 'pdeUpload'
+apply plugin: "FeaturePde"
+defaultTasks "pdeClean", "pdeUpload"
 
 buildscript { 
     repositories { 
 		flatDir(dirs: "../../../build/libs")
 	} 
     dependencies {
-        classpath ':pdePlugin:7.+' 
+        classpath ":pdePlugin:7.+" 
     }
 }
 
@@ -63,7 +63,7 @@ configure(FeaturePde){
     //equinoxLauncherPluginVersion = "1.0.201.R35x_v20090715"
     /* here you can specify the PDE plugin version to use */
     //pdeBuildPluginVersion = "3.5.1.R35x_20090820"
-    /* NOTE: if you don't specify versions for equinox and PDE, gradle will use non versioned plugins */
+    /* NOTE: if you don"t specify versions for equinox and PDE, gradle will use non versioned plugins */
 
     /* additional properties to pass directly as arguments to the PDE command line
      * the arguments will have the form : -Darg=value */
