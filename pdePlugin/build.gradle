@@ -10,6 +10,7 @@
  6.7.1: Fixed bug on dataDirectory
  6.7.2: use CMSClassUnloadingEnabled in place of CMSPermGenSweepingEnabled
  6.8: use extLocations
+ 7.0.1: full refactoring, .link files generation, target platform cleaning, etc.
  */
 
 apply plugin: 'groovy'
@@ -18,7 +19,7 @@ apply plugin: 'eclipse'
 
 
 
-version = '7.0.0-' + new java.text.SimpleDateFormat("yyyyMMddHHmmss").format(new Date())
+version = '7.0.1' // + new java.text.SimpleDateFormat("yyyyMMddHHmmss").format(new Date())
 
 
 
