@@ -27,6 +27,8 @@ import groovy.util.AntBuilder;
 
 import java.util.Map;
 
+import org.apache.tools.ant.BuildException;
+
 import com.thalesgroup.gradle.pde.BuildType;
 import com.thalesgroup.gradle.pde.PdeConvention;
 import com.thalesgroup.gradle.pde.ProductPdeConvention;
@@ -99,8 +101,12 @@ class AntPdeBuild {
         
         println "[PDE Command line] java $eclipseCommand"
         println "Building in ${conv.getBuildDirectory()} ..."
-        ant.exec(executable: "java", dir: conv.getBuildDirectory(), failonerror: true) {
-            arg(line: eclipseCommand)
+        try {
+            ant.exec(executable: "java", dir: conv.getBuildDirectory(), failonerror: true) {
+                arg(line: eclipseCommand)
+            }
+        } catch (BuildException e) {
+            println e
         }
     }
 }
