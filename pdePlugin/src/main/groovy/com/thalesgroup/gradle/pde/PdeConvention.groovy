@@ -24,6 +24,10 @@
 package com.thalesgroup.gradle.pde;
 
 
+
+
+import groovy.util.XmlSlurper;
+
 import org.gradle.api.GradleException;
 import org.gradle.api.Project
 
@@ -41,7 +45,7 @@ public abstract class PdeConvention {
     // optional plugin fields
     String pdeBuildPluginVersion;
     String equinoxLauncherPluginVersion;
-    Boolean usePreviousLinks;
+    Boolean usePreviousLinks = false;
     List<String> extLocations;
     String linksSrcDirectory;
     Map additionalProperties = new HashMap<String, Object>();
@@ -49,7 +53,8 @@ public abstract class PdeConvention {
     String rcpCleaner = rcpCleaner;
     String eclipseExtensionsRoot = eclipseExtensionsRoot;
     String data;
-    String jvmOptions = "-Xms128m -Xmx512m -XX:MaxPermSize=256m -XX:+UseConcMarkSweepGC -XX:+CMSClassUnloadingEnabled";
+    String jvmOptions = "-Xms128m -Xmx512m -XX:MaxPermSize=256m";
+    String targetFile;
 
     // mandatory PDE properties
     String base;
@@ -89,6 +94,24 @@ public abstract class PdeConvention {
         }
         
         return locations
+    }
+    
+    public List<String> getTargetPaths() {
+        List<String> paths = new ArrayList<String>();
+        
+        if (this.targetFile != null) {
+            def content = new File(this.targetFile).text
+            def target = new XmlSlurper().parseText(content)
+            def locs = target.locations.location
+            locs.each() {
+                def path = it.@path.text()
+                if (!new File(path).exists()) {
+                    throw new GradleException("ERROR in ${this.targetFile}: ${path} does not exist.")
+                }
+                paths << normPathForAnt(path)
+            }
+        }
+        return paths
     }
     
     public String getRcpCleaner() {
@@ -189,6 +212,10 @@ public abstract class PdeConvention {
         if (linksSrcDirectory) {
             println "Link files directory    : " + getLinksSrcDirectory();
         } else {
+            if (targetFile) {
+                println "Target Platform File    : ${targetFile}"
+                getTargetPaths().each { println " -> " + it }
+            }
             if (extLocations) {
                 println "Extension Locations     : "
                 getExtLocations().each { println " -> " + it }

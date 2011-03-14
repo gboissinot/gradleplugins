@@ -20,7 +20,7 @@ apply plugin: 'eclipse'
 
 
 
-version = '7.0.2' // + new java.text.SimpleDateFormat("yyyyMMddHHmmss").format(new Date())
+version = '7.1.2' // + new java.text.SimpleDateFormat("yyyyMMddHHmmss").format(new Date())
 
 
 
@@ -79,7 +79,7 @@ artifacts {
 uploadArchives {
   uploadDescriptor = true
   repositories.add(new org.apache.ivy.plugins.resolver.URLResolver()) {
-    name = "Artifactory"
+    name = "nexus"
     url = repositoryURL
     addArtifactPattern "$url/[organisation]/[artifact]-[revision].[ext]"
     addIvyPattern "$url/[organisation]/[artifact]-ivy-[revision].xml"

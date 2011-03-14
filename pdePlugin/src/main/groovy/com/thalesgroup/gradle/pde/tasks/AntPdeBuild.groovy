@@ -80,8 +80,12 @@ class AntPdeBuild {
         }
         
         //----------  Build the pluginPath
-        if (conv.getExtLocations() && !conv.getUsePreviousLinks()) {
-            String pluginPath = conv.getExtLocations().join(File.pathSeparator)
+        if (!conv.getUsePreviousLinks() && (conv.getExtLocations().size() > 0 ||
+                                            conv.getTargetPaths().size() > 0 ) ) 
+        {
+            def paths = conv.getExtLocations() + conv.getTargetPaths()
+
+            def pluginPath = paths.join(File.pathSeparator)
             args << "-DpluginPath=\"${pluginPath}\""
         }
         
@@ -101,12 +105,8 @@ class AntPdeBuild {
         
         println "[PDE Command line] java $eclipseCommand"
         println "Building in ${conv.getBuildDirectory()} ..."
-        try {
-            ant.exec(executable: "java", dir: conv.getBuildDirectory(), failonerror: true) {
-                arg(line: eclipseCommand)
-            }
-        } catch (BuildException e) {
-            println e
+        ant.exec(executable: "java", dir: conv.getBuildDirectory(), failonerror: true) {
+            arg(line: eclipseCommand)
         }
     }
 }
